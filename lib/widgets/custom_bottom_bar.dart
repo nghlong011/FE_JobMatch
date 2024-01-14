@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 
+// ignore: must_be_immutable
 class CustomBottomBar extends StatefulWidget {
   CustomBottomBar({this.onChanged});
 
@@ -17,8 +18,14 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     BottomMenuModel(
       icon: ImageConstant.imgNavhome,
       activeIcon: ImageConstant.imgNavhome,
-      title: "Home",
+      title: "Trang chủ",
       type: BottomBarEnum.Home,
+    ),
+    BottomMenuModel(
+      icon: ImageConstant.imgNavsaved,
+      activeIcon: ImageConstant.imgNavsaved,
+      title: "Công ty",
+      type: BottomBarEnum.Company,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgNavmessage,
@@ -29,13 +36,13 @@ class CustomBottomBarState extends State<CustomBottomBar> {
     BottomMenuModel(
       icon: ImageConstant.imgNavsaved,
       activeIcon: ImageConstant.imgNavsaved,
-      title: "Saved",
+      title: "Ứng tuyển",
       type: BottomBarEnum.Saved,
     ),
     BottomMenuModel(
       icon: ImageConstant.imgNavprofile,
       activeIcon: ImageConstant.imgNavprofile,
-      title: "Profile",
+      title: "Tài khoản",
       type: BottomBarEnum.Profile,
     )
   ];
@@ -43,7 +50,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: getVerticalSize(88),
+      height: getVerticalSize(60),
       decoration: BoxDecoration(
         color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
         boxShadow: [
@@ -131,6 +138,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 
 enum BottomBarEnum {
   Home,
+  Company,
   Message,
   Saved,
   Profile,

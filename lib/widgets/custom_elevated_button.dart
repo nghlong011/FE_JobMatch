@@ -35,6 +35,7 @@ class CustomElevatedButton extends BaseButton {
 
   final Widget? rightIcon;
 
+
   @override
   Widget build(BuildContext context) {
     return alignment != null

@@ -94,15 +94,6 @@ class SavedItemWidget extends StatelessWidget {
               ],
             ),
           ),
-          CustomImageView(
-            svgPath: ImageConstant.imgBookmarkPrimary,
-            height: getSize(24),
-            width: getSize(24),
-            margin: getMargin(
-              left: 30,
-              bottom: 92,
-            ),
-          ),
         ],
       ),
     );

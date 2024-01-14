@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
+import 'package:nghlong011_s_application5/presentation/home_container_screen/home_container_screen.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable
@@ -49,6 +50,14 @@ class ApplyJobPopupDialog extends StatelessWidget {
             ),
           ),
           CustomElevatedButton(
+            onTap: (){
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeContainerScreen(),
+                ),
+              );
+            },
             height: getVerticalSize(46),
             width: getHorizontalSize(127),
             text: "Continue",

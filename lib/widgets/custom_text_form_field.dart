@@ -4,12 +4,13 @@ import 'package:nghlong011_s_application5/core/app_export.dart';
 class CustomTextFormField extends StatelessWidget {
   CustomTextFormField({
     Key? key,
+    this.labelText,
     this.alignment,
     this.width,
     this.margin,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
     this.fillColor,
     this.filled = true,
     this.validator,
+    this.errorText,
   }) : super(
           key: key,
         );
@@ -74,6 +76,11 @@ class CustomTextFormField extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+  final String? labelText;
+
+  final String? errorText;
+
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -107,6 +114,7 @@ class CustomTextFormField extends StatelessWidget {
         prefixIconConstraints: prefixConstraints,
         suffixIcon: suffix,
         suffixIconConstraints: suffixConstraints,
+        labelText: labelText ?? "",
         isDense: true,
         contentPadding: contentPadding ??
             getPadding(

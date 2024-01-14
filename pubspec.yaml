@@ -17,6 +17,11 @@ dependencies:
   dio:
   connectivity_plus:
   shared_preferences:
+  fluttertoast:
+  file_picker:
+  http:
+  http_parser:
+  jwt_decoder:
 dev_dependencies: 
   flutter_test: 
     sdk: flutter

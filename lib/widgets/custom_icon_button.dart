@@ -80,7 +80,7 @@ extension IconButtonStyleHelper on CustomIconButton {
         borderRadius: BorderRadius.circular(getHorizontalSize(8.00)),
       );
   static BoxDecoration get fillTealA => BoxDecoration(
-        color: appTheme.tealA700,
+        color: appTheme.gray100,
         borderRadius: BorderRadius.circular(getHorizontalSize(24.00)),
       );
   static BoxDecoration get fillDeepPurple => BoxDecoration(

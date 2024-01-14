@@ -15,6 +15,7 @@ class JobDetailsPageState extends State<JobDetailsPage>
   bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     mediaQueryData = MediaQuery.of(context);
     return SafeArea(
         child: Scaffold(
@@ -75,7 +76,13 @@ class JobDetailsPageState extends State<JobDetailsPage>
                                                   onTapApplynow(context);
                                                 }))
                                       ]))
-                            ]))))));
+                            ]
+                        )
+                    )
+                )
+            )
+        )
+    );
   }
 
   /// Navigates to the applyJobScreen when the action is triggered.

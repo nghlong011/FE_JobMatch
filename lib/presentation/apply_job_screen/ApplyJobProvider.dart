@@ -3,20 +3,26 @@ import 'package:dio/dio.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 
 
-class RegistrationProvider extends ChangeNotifier {
+class ApplyJobProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   bool _isLoading = false;
+  bool _succes = false;
 
+  bool get succes => _succes;
   bool get isLoading => _isLoading;
-  Future<void> registerUser(Map<String, dynamic> userData, context) async {
+  Future<void> jobApp(FormData userData,String token, context) async {
     _isLoading = true;
     notifyListeners();
     try {
-      Response response = await _apiService.registerUser(userData);
+      Response response = await _apiService.jobApp(userData, token);
       _isLoading = false;
       notifyListeners();
       print(response.data['messageCode']);
-      Navigator.pushNamed(context, AppRoutes.loginScreen);
+      if(response.data['messageCode'] == 'Ứng tuyển thành công'){
+        _succes = true;
+      }else{
+        _succes = false;
+      }
 
     } catch (error) {
       print('Error registering user: $error');

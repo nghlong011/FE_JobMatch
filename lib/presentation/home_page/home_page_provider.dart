@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 
-
-class RegistrationProvider extends ChangeNotifier {
+class GetJobProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   bool _isLoading = false;
+  var _responseData;
 
   bool get isLoading => _isLoading;
-  Future<void> registerUser(Map<String, dynamic> userData, context) async {
+  get responseData => _responseData;
+  Future<void> getJob(String token) async {
     _isLoading = true;
     notifyListeners();
     try {
-      Response response = await _apiService.registerUser(userData);
+      Response response = await _apiService.getJob(token);
       _isLoading = false;
       notifyListeners();
-      print(response.data['messageCode']);
-      Navigator.pushNamed(context, AppRoutes.loginScreen);
-
+      _responseData = response.data['data'];
     } catch (error) {
-      print('Error registering user: $error');
+      print('Error list job: $error');
     }
     _isLoading = false;
     notifyListeners();

@@ -9,7 +9,7 @@ class CustomSearchView extends StatelessWidget {
     this.margin,
     this.controller,
     this.focusNode,
-    this.autofocus = true,
+    this.autofocus = false,
     this.textStyle,
     this.textInputType = TextInputType.text,
     this.maxLines,
@@ -24,9 +24,13 @@ class CustomSearchView extends StatelessWidget {
     this.fillColor,
     this.filled = true,
     this.validator,
+    this.onFieldSubmitted,
+
   }) : super(
           key: key,
         );
+
+  final ValueChanged<String>? onFieldSubmitted;
 
   final Alignment? alignment;
 
@@ -68,6 +72,7 @@ class CustomSearchView extends StatelessWidget {
 
   final FormFieldValidator<String>? validator;
 
+
   @override
   Widget build(BuildContext context) {
     return alignment != null
@@ -82,6 +87,7 @@ class CustomSearchView extends StatelessWidget {
         width: width ?? double.maxFinite,
         margin: margin,
         child: TextFormField(
+          onFieldSubmitted: onFieldSubmitted,
           controller: controller,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,
@@ -147,7 +153,6 @@ class CustomSearchView extends StatelessWidget {
       );
 }
 
-/// Extension on [CustomSearchView] to facilitate inclusion of all types of border style etc
 extension SearchViewStyleHelper on CustomSearchView {
   static OutlineInputBorder get outlineIndigo => OutlineInputBorder(
         borderRadius: BorderRadius.circular(getHorizontalSize(24.00)),

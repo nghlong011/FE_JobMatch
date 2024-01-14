@@ -41,6 +41,8 @@ class AppRoutes {
 
   static const String homePage = '/home_page';
 
+  static const String companyPage = '/company_page';
+
   static const String homeContainerScreen = '/home_container_screen';
 
   static const String searchScreen = '/search_screen';
@@ -101,11 +103,11 @@ class AppRoutes {
     jobTypeScreen: (context) => JobTypeScreen(),
     loginScreen: (context) => LoginScreen(),
     homeContainerScreen: (context) => HomeContainerScreen(),
-    searchScreen: (context) => SearchScreen(),
-    jobDetailsTabContainerScreen: (context) => JobDetailsTabContainerScreen(),
+    searchScreen: (context) => SearchScreen(allJobs: [],),
+    jobDetailsTabContainerScreen: (context) => JobDetailsTabContainerScreen(jobDetails: {},),
     messageActionScreen: (context) => MessageActionScreen(),
     chatScreen: (context) => ChatScreen(),
-    applyJobScreen: (context) => ApplyJobScreen(),
+    applyJobScreen: (context) => ApplyJobScreen(jobDetails: {},),
     notificationsMyProposalsTabContainerScreen: (context) =>
         NotificationsMyProposalsTabContainerScreen(),
     settingsScreen: (context) => SettingsScreen(),
