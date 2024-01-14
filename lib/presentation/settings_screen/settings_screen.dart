@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
-import 'package:nghlong011_s_application5/presentation/home_page/home_page.dart';
-import 'package:nghlong011_s_application5/presentation/message_page/message_page.dart';
-import 'package:nghlong011_s_application5/presentation/profile_page/profile_page.dart';
-import 'package:nghlong011_s_application5/presentation/saved_page/saved_page.dart';
+import 'package:nghlong011_s_application5/presentation/experience_setting_screen/experience_setting_screen.dart';
+import 'package:nghlong011_s_application5/presentation/login_screen/login_screen.dart';
+import 'package:nghlong011_s_application5/presentation/notifications_screen/notifications_screen.dart';
+import 'package:nghlong011_s_application5/presentation/personal_info_screen/personal_info_screen.dart';
+
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_title.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
-import 'package:nghlong011_s_application5/widgets/custom_bottom_bar.dart';
+
 import 'package:nghlong011_s_application5/presentation/logout_popup_dialog/logout_popup_dialog.dart';
 
 // ignore_for_file: must_be_immutable
@@ -106,7 +107,12 @@ class SettingsScreen extends StatelessWidget {
                                               .labelLargeSemiBold))),
                               GestureDetector(
                                   onTap: () {
-                                    onTapAccount(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PersonalInfoScreen(),
+                                      ),
+                                    );
                                   },
                                   child: Padding(
                                       padding: getPadding(top: 15),
@@ -142,7 +148,12 @@ class SettingsScreen extends StatelessWidget {
                                       Divider(indent: getHorizontalSize(36))),
                               GestureDetector(
                                   onTap: () {
-                                    onTapPrivacy(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ExperienceSettingScreen(),
+                                      ),
+                                    );
                                   },
                                   child: Padding(
                                       padding: getPadding(top: 15),
@@ -185,7 +196,12 @@ class SettingsScreen extends StatelessWidget {
                                               .labelLargeSemiBold))),
                               GestureDetector(
                                   onTap: () {
-                                    onTapNotification(context);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => NotificationsScreen(),
+                                      ),
+                                    );
                                   },
                                   child: Padding(
                                       padding: getPadding(top: 15),
@@ -371,7 +387,12 @@ class SettingsScreen extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: GestureDetector(
                                       onTap: () {
-                                        onTapTxtLargelabelmediu(context);
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => LoginScreen(),
+                                          ),
+                                        );
                                       },
                                       child: Padding(
                                           padding: getPadding(top: 28),
@@ -379,104 +400,44 @@ class SettingsScreen extends StatelessWidget {
                                               style: CustomTextStyles
                                                   .titleMediumRedA200))))
                             ])))),
-            bottomNavigationBar:
-                CustomBottomBar(onChanged: (BottomBarEnum type) {
-              Navigator.pushNamed(
-                  navigatorKey.currentContext!, getCurrentRoute(type));
-            })));
+
+
+        )
+    );
   }
 
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePage;
-      case BottomBarEnum.Message:
-        return AppRoutes.messagePage;
-      case BottomBarEnum.Saved:
-        return AppRoutes.savedPage;
-      case BottomBarEnum.Profile:
-        return AppRoutes.profilePage;
-      default:
-        return "/";
-    }
-  }
 
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePage:
-        return HomePage();
-      case AppRoutes.messagePage:
-        return MessagePage();
-      case AppRoutes.savedPage:
-        return SavedPage();
-      case AppRoutes.profilePage:
-        return ProfilePage();
-      default:
-        return DefaultWidget();
-    }
-  }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
 
-  /// Navigates to the personalInfoScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the personalInfoScreen.
+
   onTapAccount(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.personalInfoScreen);
+    Navigator.pushReplacementNamed(context, AppRoutes.personalInfoScreen);
   }
 
-  /// Navigates to the experienceSettingScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the experienceSettingScreen.
+
   onTapPrivacy(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.experienceSettingScreen);
   }
 
-  /// Navigates to the notificationsScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the notificationsScreen.
+
   onTapNotification(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.notificationsScreen);
   }
 
-  /// Navigates to the languageScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the languageScreen.
+
   onTapLanguage(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.languageScreen);
   }
 
-  /// Navigates to the privacyScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the privacyScreen.
+
   onTapLegalandpolicie(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.privacyScreen);
   }
 
-  /// Displays an [AlertDialog] with a custom content widget using the
-  /// provided [BuildContext].
-  ///
-  /// The custom content is created using the [LogoutPopupDialog]
-  /// method and is displayed in an [AlertDialog] that fills the entire screen
-  /// with no padding.
+
   onTapTxtLargelabelmediu(BuildContext context) {
     showDialog(
         context: context,

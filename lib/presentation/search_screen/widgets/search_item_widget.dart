@@ -97,7 +97,7 @@ class SearchItemWidget extends StatelessWidget {
           CustomImageView(
             svgPath: ImageConstant.imgBookmark,
             height: getSize(24),
-            width: getSize(24),
+            width: getSize(20),
             margin: getMargin(
               left: 30,
               bottom: 92,

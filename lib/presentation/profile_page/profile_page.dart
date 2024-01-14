@@ -6,8 +6,9 @@ import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_title.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
-import 'package:nghlong011_s_application5/widgets/custom_checkbox_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
+
+import '../settings_screen/settings_screen.dart';
 
 // ignore_for_file: must_be_immutable
 class ProfilePage extends StatelessWidget {
@@ -30,15 +31,21 @@ class ProfilePage extends StatelessWidget {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Profile"),
+                title: AppbarTitle(text: "Hồ sơ cá nhân"),
                 actions: [
                   AppbarImage(
                       svgPath: ImageConstant.imgGroup162903,
                       margin:
                           getMargin(left: 24, top: 13, right: 24, bottom: 13),
                       onTap: () {
-                        onTapImage(context);
-                      })
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsScreen(),
+                          ),
+                        );
+                      }
+                      )
                 ]),
             body: SizedBox(
                 width: mediaQueryData.size.width,
@@ -74,9 +81,6 @@ class ProfilePage extends StatelessWidget {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       CustomImageView(
-                                                          imagePath:
-                                                              ImageConstant
-                                                                  .img63,
                                                           height: getSize(89),
                                                           width: getSize(89),
                                                           radius: BorderRadius
@@ -86,21 +90,9 @@ class ProfilePage extends StatelessWidget {
                                                       Padding(
                                                           padding: getPadding(
                                                               top: 9),
-                                                          child: Text(
-                                                              "Gustavo Lipshutz",
+                                                          child: Text("Long",
                                                               style: CustomTextStyles
                                                                   .titleMediumErrorContainer)),
-                                                      CustomCheckboxButton(
-                                                          text: "Open to work",
-                                                          value: opentowork,
-                                                          margin:
-                                                              getMargin(top: 5),
-                                                          textStyle:
-                                                              CustomTextStyles
-                                                                  .titleSmallPoppinsBluegray300,
-                                                          onChange: (value) {
-                                                            opentowork = value;
-                                                          })
                                                     ])))
                                       ])),
                               Container(
@@ -114,79 +106,40 @@ class ProfilePage extends StatelessWidget {
                                       textAlign: TextAlign.center,
                                       style: theme.textTheme.bodyMedium!
                                           .copyWith(height: 1.57))),
-                              Padding(
-                                  padding:
-                                      getPadding(left: 24, top: 17, right: 24),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            width: getHorizontalSize(154),
-                                            padding: getPadding(
-                                                left: 40,
-                                                top: 12,
-                                                right: 40,
-                                                bottom: 12),
-                                            decoration: AppDecoration
-                                                .fillGray200
-                                                .copyWith(
-                                                    borderRadius:
-                                                        BorderRadiusStyle
-                                                            .roundedBorder24),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  Padding(
-                                                      padding:
-                                                          getPadding(top: 2),
-                                                      child: Text("25",
-                                                          style: CustomTextStyles
-                                                              .titleMediumBold_1)),
-                                                  Padding(
-                                                      padding: getPadding(
-                                                          left: 8, top: 5),
-                                                      child: Text("Applied",
-                                                          style: theme.textTheme
-                                                              .labelLarge))
-                                                ])),
-                                        Container(
-                                            width: getHorizontalSize(154),
-                                            margin: getMargin(left: 19),
-                                            padding: getPadding(
-                                                left: 35,
-                                                top: 12,
-                                                right: 35,
-                                                bottom: 12),
-                                            decoration: AppDecoration
-                                                .fillGray200
-                                                .copyWith(
-                                                    borderRadius:
-                                                        BorderRadiusStyle
-                                                            .roundedBorder24),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Padding(
-                                                      padding:
-                                                          getPadding(top: 2),
-                                                      child: Text("10",
-                                                          style: CustomTextStyles
-                                                              .titleMediumBold_1)),
-                                                  Padding(
-                                                      padding: getPadding(
-                                                          left: 8,
-                                                          top: 2,
-                                                          bottom: 3),
-                                                      child: Text("Reviewed",
-                                                          style: theme.textTheme
-                                                              .labelLarge))
-                                                ]))
-                                      ])),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                        width: getHorizontalSize(300),
+                                        padding: getPadding(
+                                            left: 40,
+                                            top: 12,
+                                            right: 40,
+                                            bottom: 12),
+                                        decoration: AppDecoration.fillGray200
+                                            .copyWith(
+                                                borderRadius: BorderRadiusStyle
+                                                    .roundedBorder24),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                  padding: getPadding(top: 2),
+                                                  child: Text("25",
+                                                      style: CustomTextStyles
+                                                          .titleMediumBold_1)),
+                                              Padding(
+                                                  padding: getPadding(
+                                                      left: 8, top: 5),
+                                                  child: Text(
+                                                      "Công việc đã ứng tuyển",
+                                                      style: theme.textTheme
+                                                          .labelLarge))
+                                            ])),
+                                  ]),
                               Padding(
                                   padding: getPadding(top: 24),
                                   child: Divider(color: appTheme.indigo50)),
@@ -213,7 +166,7 @@ class ProfilePage extends StatelessWidget {
                                               Padding(
                                                   padding: getPadding(
                                                       top: 2, bottom: 1),
-                                                  child: Text("About Me",
+                                                  child: Text("Giới thiệu",
                                                       style: CustomTextStyles
                                                           .titleMediumInter)),
                                               CustomImageView(
@@ -226,8 +179,7 @@ class ProfilePage extends StatelessWidget {
                                             width: getHorizontalSize(272),
                                             margin:
                                                 getMargin(top: 14, right: 22),
-                                            child: Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Libero, cursus molestie nullam ac pharetra est nec enim. Vel eleifend semper nunc faucibus donec pretium.",
+                                            child: Text("Lập trình viên",
                                                 maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: CustomTextStyles
@@ -259,7 +211,7 @@ class ProfilePage extends StatelessWidget {
                                                   Padding(
                                                       padding: getPadding(
                                                           top: 1, bottom: 2),
-                                                      child: Text("Skills",
+                                                      child: Text("Kĩ năng",
                                                           style: CustomTextStyles
                                                               .titleMediumInter)),
                                                   CustomImageView(
@@ -299,7 +251,8 @@ class ProfilePage extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Experience",
+                                                  child: Text(
+                                                      "Kinh nghiệm làm việc",
                                                       style: CustomTextStyles
                                                           .titleMediumBold)),
                                               CustomImageView(
@@ -360,7 +313,8 @@ class ProfilePage extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Education",
+                                                  child: Text(
+                                                      "Trình độ giáo dục",
                                                       style: CustomTextStyles
                                                           .titleMediumBold_1)),
                                               CustomImageView(
@@ -383,7 +337,7 @@ class ProfilePage extends StatelessWidget {
                                               Expanded(
                                                   child: Padding(
                                                       padding: getPadding(
-                                                          left: 12, top: 5),
+                                                          left: 10, top: 5),
                                                       child: Column(
                                                           crossAxisAlignment:
                                                               CrossAxisAlignment
@@ -393,7 +347,7 @@ class ProfilePage extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                "University of Oxford",
+                                                                "Đại học Thuỷ Lợi",
                                                                 style: CustomTextStyles
                                                                     .titleSmallPrimarySemiBold),
                                                             Padding(
@@ -407,7 +361,7 @@ class ProfilePage extends StatelessWidget {
                                                                               top:
                                                                                   1),
                                                                           child: Text(
-                                                                              "Computer Science",
+                                                                              "Hệ thống thông tin",
                                                                               style: theme.textTheme.labelLarge)),
                                                                       Padding(
                                                                           padding: getPadding(
@@ -432,20 +386,8 @@ class ProfilePage extends StatelessWidget {
                             ]))))));
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
 
-  /// Navigates to the settingsScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the settingsScreen.
-  onTapImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.settingsScreen);
-  }
 }

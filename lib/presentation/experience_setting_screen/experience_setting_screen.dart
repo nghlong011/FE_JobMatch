@@ -139,7 +139,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                             child: Row(children: [
                                               CustomIconButton(
                                                   height: getSize(48),
-                                                  width: getSize(48),
+                                                  width: getSize(40),
                                                   padding: getPadding(all: 8),
                                                   child: CustomImageView(
                                                       svgPath: ImageConstant

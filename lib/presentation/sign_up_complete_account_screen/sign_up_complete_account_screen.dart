@@ -2,37 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
-import 'package:provider/provider.dart';
 
 import 'Regis.dart';
 
-String? validatePassword(String value) {
-  if (value.isEmpty) {
-    return 'Bạn chưa điền mật khẩu';
-  }
-  if (value.length < 8) {
-    return 'Mật khẩu phải có ít nhất 8 ký tự ';
-  }
-  final hasUppercase = value.contains(RegExp(r'[A-Z]'));
-  final hasLowercase = value.contains(RegExp(r'[a-z]'));
-  final hasDigits = value.contains(RegExp(r'[0-9]'));
-  final hasSpecialCharacters = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
-
-  if (!hasUppercase || !hasLowercase || !hasDigits || !hasSpecialCharacters) {
-    return 'Mật khẩu phải chứa ít nhất một chữ cái hoa, chữ cái thường, số, ký tự đặc biệt';
-  }
-  return null;
-}
 
 // ignore_for_file: must_be_immutable
 class SignUpCompleteAccountScreen extends StatelessWidget {
   SignUpCompleteAccountScreen({Key? key}) : super(key: key);
 
-  TextEditingController firstNameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
-  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
+
+  bool isPasswordError = false;
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -61,38 +45,30 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                 onTapImgImage(context);
                               }),
                           Align(
-                              alignment: Alignment.centerRight,
                               child: Padding(
                                   padding: getPadding(top: 47, right: 15),
-                                  child: Text("Complete your account",
+                                  child: Text("Đăng ký tài khoản",
                                       style: theme.textTheme.headlineSmall))),
-                          Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                  padding: getPadding(top: 9),
-                                  child: Text("Lorem ipsum dolor sit amet",
-                                      style: CustomTextStyles
-                                          .titleSmallBluegray400_1))),
                           Padding(
                               padding: getPadding(top: 33),
-                              child: Text("First Name",
+                              child: Text("Họ và tên",
                                   style: theme.textTheme.titleSmall)),
                           CustomTextFormField(
-                              controller: firstNameController,
+                              controller: nameController,
                               margin: getMargin(top: 9),
-                              hintText: "Enter your first name",
+                              hintText: "Nhập họ và tên",
                               hintStyle:
                                   CustomTextStyles.titleMediumBluegray400,
                               contentPadding: getPadding(
                                   left: 12, top: 15, right: 12, bottom: 15)),
                           Padding(
                               padding: getPadding(top: 18),
-                              child: Text("Last Name",
+                              child: Text("Email",
                                   style: theme.textTheme.titleSmall)),
                           CustomTextFormField(
-                              controller: lastNameController,
+                              controller: emailController,
                               margin: getMargin(top: 9),
-                              hintText: "Enter your last name",
+                              hintText: "Nhập email",
                               hintStyle:
                                   CustomTextStyles.titleMediumBluegray400,
                               contentPadding: getPadding(
@@ -102,12 +78,9 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                               child: Text("Password",
                                   style: theme.textTheme.titleSmall)),
                           CustomTextFormField(
-                              validator: (value) {
-                                return validatePassword(value ?? '');
-                              },
                               controller: passwordController,
                               margin: getMargin(top: 9),
-                              hintText: "Create a password",
+                              hintText: "Nhập mật khẩu",
                               hintStyle:
                                   CustomTextStyles.titleMediumBluegray400,
                               textInputAction: TextInputAction.done,
@@ -128,16 +101,27 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                 onTap: registrationProvider.isLoading
                                     ? null
                                     : () {
-                                        final userData = {
-                                          'email': lastNameController.text,
-                                          'password': passwordController.text,
-                                        };
-                                        Provider.of<RegistrationProvider>(
-                                                context,
-                                                listen: false)
-                                            .registerUser(userData, context);
+                                        final String email =
+                                            emailController.text;
+                                        final String password =
+                                            passwordController.text;
+
+                                        // if (password.isNotEmpty && isValidPassword(password)) {
+                                          final userData = {
+                                            'email': email,
+                                            'password': password,
+                                            'role': "ROLE_JOB_SEEKER"
+                                          };
+                                          Provider.of<RegistrationProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .registerUser(userData, context);
+                                        // } else {
+                                        //   // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
+                                        //   print('Invalid password');
+                                        // }
                                       },
-                                text: "Continue with Email",
+                                text: "Đăng Ký",
                                 margin: getMargin(top: 40),
                                 buttonStyle: CustomButtonStyles.fillPrimary);
                           }),
@@ -150,7 +134,7 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Text("Already have an account?",
+                                        Text("Bạn đã có tài khoản?",
                                             style: CustomTextStyles
                                                 .titleMediumBluegray300),
                                         GestureDetector(
@@ -159,7 +143,7 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                             },
                                             child: Padding(
                                                 padding: getPadding(left: 3),
-                                                child: Text(" Login",
+                                                child: Text(" Đăng nhập",
                                                     style: theme.textTheme
                                                         .titleMedium)))
                                       ]))),
@@ -173,24 +157,27 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                       text: TextSpan(children: [
                                         TextSpan(
                                             text:
-                                                "By signing up you agree to our ",
+                                                "Bằng cách đăng ký bạn đồng ý với các ",
                                             style: CustomTextStyles
                                                 .titleSmallBluegray400SemiBold),
                                         TextSpan(
-                                            text: "Terms",
+                                            text: "Thoả thuận",
                                             style: CustomTextStyles
                                                 .titleSmallErrorContainer),
                                         TextSpan(
-                                            text: " and ",
+                                            text: " và ",
                                             style: CustomTextStyles
                                                 .titleSmallBluegray400SemiBold),
                                         TextSpan(
-                                            text: "Conditions of Use",
+                                            text: "Điều kiện sử dụng",
                                             style: CustomTextStyles
                                                 .titleSmallErrorContainer)
                                       ]),
                                       textAlign: TextAlign.center)))
-                        ])))));
+                        ]))
+            )
+        )
+    );
   }
 
   /// Navigates back to the previous screen.

@@ -4,11 +4,15 @@ import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_outlined_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 
+import 'login.dart';
+
+
 // ignore_for_file: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
   TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -40,14 +44,9 @@ class LoginScreen extends StatelessWidget {
                               padding: getPadding(top: 44),
                               child: Text("Hi, Welcome Back! 👋",
                                   style: theme.textTheme.headlineSmall)),
-                          Padding(
-                              padding: getPadding(top: 11),
-                              child: Text("Lorem ipsum dolor sit amet",
-                                  style: CustomTextStyles
-                                      .titleSmallBluegray400_1)),
                           CustomOutlinedButton(
                               height: getVerticalSize(56),
-                              text: "Continue with Google",
+                              text: "Đăng nhập với Google",
                               margin: getMargin(top: 31),
                               leftIcon: Container(
                                   margin: getMargin(right: 12),
@@ -56,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                               buttonStyle: CustomButtonStyles.outlinePrimary,
                               buttonTextStyle: theme.textTheme.titleMedium!),
                           Padding(
-                              padding: getPadding(left: 33, top: 26, right: 33),
+                              padding: getPadding(left: 33, top: 26, right: 20),
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,8 +66,8 @@ class LoginScreen extends StatelessWidget {
                                             width: getHorizontalSize(62),
                                             child: Divider())),
                                     Padding(
-                                        padding: getPadding(left: 12),
-                                        child: Text("Or continue with",
+                                        padding: getPadding(left: 5),
+                                        child: Text("Hoặc đăng nhập với",
                                             style: CustomTextStyles
                                                 .titleSmallBluegray300)),
                                     Padding(
@@ -87,19 +86,67 @@ class LoginScreen extends StatelessWidget {
                           CustomTextFormField(
                               controller: emailController,
                               margin: getMargin(top: 9),
-                              hintText: "Enter your email address",
+                              hintText: "Nhập email",
                               hintStyle:
-                                  CustomTextStyles.titleMediumBluegray400,
+                              CustomTextStyles.titleMediumBluegray400,
                               textInputAction: TextInputAction.done,
                               textInputType: TextInputType.emailAddress,
                               contentPadding: getPadding(
                                   left: 12, top: 15, right: 12, bottom: 15)),
-                          CustomElevatedButton(
-                              text: "Continue with Email",
-                              margin: getMargin(top: 40),
-                              buttonStyle: CustomButtonStyles.fillPrimary,
-                              onTap: () {
-                                onTapContinuewith(context);
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                  padding: getPadding(top: 28),
+                                  child: Text("Password",
+                                      style: theme.textTheme.titleSmall))),
+                          CustomTextFormField(
+                              obscureText: false,
+                              controller: passwordController,
+                              margin: getMargin(top: 9),
+                              hintText: "Nhập mật khẩu",
+                              hintStyle:
+                              CustomTextStyles.titleMediumBluegray400,
+                              textInputAction: TextInputAction.done,
+                              textInputType: TextInputType.visiblePassword,
+                              suffix: Container(
+                                  margin: getMargin(
+                                      left: 30, top: 14, right: 16, bottom: 14),
+                                  child: CustomImageView(
+                                      svgPath: ImageConstant.imgCheckmark)
+                              ),
+                              suffixConstraints: BoxConstraints(
+                                  maxHeight: getVerticalSize(52)),
+
+                              contentPadding:
+                              getPadding(left: 16, top: 15, bottom: 15)),
+                          Consumer<LoginProvider>(
+                              builder: (context, loginProvider, _) {
+                                return CustomElevatedButton(
+                                    onTap: loginProvider.isLoading
+                                        ? null
+                                        : () {
+                                      final String email =
+                                          emailController.text;
+                                      final String password =
+                                          passwordController.text;
+
+                                      if (password.isNotEmpty) {
+                                        final userData = {
+                                          'email': email,
+                                          'password': password,
+                                        };
+                                        Provider.of<LoginProvider>(
+                                            context,
+                                            listen: false)
+                                            .loginUser(userData, context);
+                                      } else {
+                                        // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
+                                        print('Invalid password');
+                                      }
+                                    },
+                                    text: "Đăng Nhập",
+                                    margin: getMargin(top: 40),
+                                    buttonStyle: CustomButtonStyles.fillPrimary);
                               }),
                           Padding(
                               padding: getPadding(left: 41, top: 26, right: 41),
@@ -108,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                                   children: [
                                     Padding(
                                         padding: getPadding(bottom: 1),
-                                        child: Text("Don’t have an account?",
+                                        child: Text("Bạn không có tài khoản?",
                                             style: CustomTextStyles
                                                 .titleMediumBluegray300)),
                                     GestureDetector(
@@ -116,35 +163,37 @@ class LoginScreen extends StatelessWidget {
                                           onTapTxtLargelabelmediu(context);
                                         },
                                         child: Padding(
-                                            padding: getPadding(left: 2),
-                                            child: Text(" Sign up",
+                                            padding: getPadding(left: 0),
+                                            child: Text(" Đăng ký",
                                                 style: theme
                                                     .textTheme.titleMedium)))
                                   ])),
                           Container(
                               width: getHorizontalSize(245),
                               margin: getMargin(
-                                  left: 40, top: 84, right: 40, bottom: 5),
-                              child: RichText(
-                                  text: TextSpan(children: [
-                                    TextSpan(
-                                        text: "By signing up you agree to our ",
-                                        style: CustomTextStyles
-                                            .titleSmallBluegray400SemiBold),
-                                    TextSpan(
-                                        text: "Terms",
-                                        style: CustomTextStyles
-                                            .titleSmallErrorContainer),
-                                    TextSpan(
-                                        text: " and ",
-                                        style: CustomTextStyles
-                                            .titleSmallBluegray400SemiBold),
-                                    TextSpan(
-                                        text: "Conditions of Use",
-                                        style: CustomTextStyles
-                                            .titleSmallErrorContainer)
-                                  ]),
-                                  textAlign: TextAlign.center))
+                                  top: 84),
+                              child: Center(
+                                child: RichText(
+                                    text: TextSpan(children: [
+                                      TextSpan(
+                                          text: "Bằng cách đăng ký bạn đồng ý với ",
+                                          style: CustomTextStyles
+                                              .titleSmallBluegray400SemiBold),
+                                      TextSpan(
+                                          text: "Thoả thuận",
+                                          style: CustomTextStyles
+                                              .titleSmallErrorContainer),
+                                      TextSpan(
+                                          text: " và ",
+                                          style: CustomTextStyles
+                                              .titleSmallBluegray400SemiBold),
+                                      TextSpan(
+                                          text: "Điều khoản sử dụng của chúng tôi",
+                                          style: CustomTextStyles
+                                              .titleSmallErrorContainer)
+                                    ]),
+                                    textAlign: TextAlign.center),
+                              ))
                         ])))));
   }
 
@@ -156,14 +205,6 @@ class LoginScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  /// Navigates to the homeContainerScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the homeContainerScreen.
-  onTapContinuewith(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
-  }
 
   /// Navigates to the signUpCompleteAccountScreen when the action is triggered.
   ///

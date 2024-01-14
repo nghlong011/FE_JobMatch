@@ -1,4 +1,6 @@
-import '../home_page/widgets/home_item_widget.dart';
+import 'package:nghlong011_s_application5/presentation/job_details_tab_container_screen/job_details_tab_container_screen.dart';
+
+import '../../widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_circleimage.dart';
@@ -7,17 +9,48 @@ import 'package:nghlong011_s_application5/widgets/app_bar/appbar_subtitle.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_subtitle_2.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
-import 'package:nghlong011_s_application5/widgets/custom_search_view.dart';
+
+import '../search_screen/search_screen.dart';
+import 'home_page_provider.dart';
+
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
 // ignore_for_file: must_be_immutable
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-
+class _HomePageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String? token = await getToken();
+      var dataJobProvider = Provider.of<GetJobProvider>(context, listen: false);
+      dataJobProvider.getJob(token!);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    var getJobProvider = Provider.of<GetJobProvider>(context, listen: true);
+    var jobData = getJobProvider.responseData;
+    List<dynamic> allJobs = [];
+    if (jobData != null) {
+      for (var company in jobData) {
+        var jobsEntity = company['jobs'];
+        if (jobsEntity != null) {
+          allJobs.addAll(jobsEntity);
+        }
+      }
+    } else {
+      // Xử lý khi jobData là null
+    }
+    print(allJobs.length);
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
@@ -32,10 +65,10 @@ class HomePage extends StatelessWidget {
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          AppbarSubtitle(text: "Hi, Welcome Back! 👋"),
+                          AppbarSubtitle(text: "Chào mừng trở lại! 👋"),
                           AppbarSubtitle2(
-                              text: "Find your dream job",
-                              margin: getMargin(top: 9, right: 33))
+                            text: "Tìm kiếm công việc mơ ước",
+                          )
                         ])),
                 actions: [
                   AppbarImage(
@@ -50,31 +83,31 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Align(
-                          alignment: Alignment.center,
-                          child: CustomSearchView(
-                              margin: getMargin(left: 24, top: 30, right: 24),
-                              controller: searchController,
-                              hintText: "Search...",
-                              hintStyle:
-                                  CustomTextStyles.titleMediumBluegray400,
-                              alignment: Alignment.center,
-                              prefix: Container(
-                                  margin: getMargin(
-                                      left: 16, top: 17, right: 8, bottom: 17),
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgSearch)),
-                              prefixConstraints: BoxConstraints(
-                                  maxHeight: getVerticalSize(52)),
-                              suffix: Container(
-                                  margin: getMargin(
-                                      left: 30, top: 17, right: 16, bottom: 17),
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgFilterPrimary)),
-                              suffixConstraints: BoxConstraints(
-                                  maxHeight: getVerticalSize(52)))),
+                        alignment: Alignment.center,
+                        child: CustomElevatedButton(
+                          onTap: () {
+                            print('click');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    SearchScreen(allJobs: allJobs),
+                              ),
+                            );
+                          },
+                          margin: getMargin(),
+                          height: getVerticalSize(28),
+                          width: getHorizontalSize(300),
+                          text: "Tìm kiếm...",
+                          buttonTextStyle: theme.textTheme.labelLarge!,
+                          leftIcon: CustomImageView(
+                            svgPath: ImageConstant.imgSearch,
+                          ),
+                        ),
+                      ),
                       Padding(
                           padding: getPadding(left: 24, top: 25),
-                          child: Text("Recommendation",
+                          child: Text("Việc làm phù hợp",
                               style: CustomTextStyles.titleMedium18)),
                       Align(
                           alignment: Alignment.centerRight,
@@ -335,7 +368,7 @@ class HomePage extends StatelessWidget {
                                   ])))),
                       Padding(
                           padding: getPadding(left: 24, top: 22),
-                          child: Text("Recent Jobs",
+                          child: Text("Việc làm mới",
                               style: CustomTextStyles.titleMediumInter)),
                       Expanded(
                           child: Align(
@@ -343,28 +376,170 @@ class HomePage extends StatelessWidget {
                               child: Padding(
                                   padding:
                                       getPadding(left: 24, top: 16, right: 24),
-                                  child: ListView.separated(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      separatorBuilder: (context, index) {
-                                        return SizedBox(
-                                            height: getVerticalSize(16));
-                                      },
-                                      itemCount: 2,
-                                      itemBuilder: (context, index) {
-                                        return HomeItemWidget(detail: () {
-                                          detail(context);
-                                        });
-                                      }))))
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: allJobs.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  JobDetailsTabContainerScreen(
+                                                      jobDetails:
+                                                          allJobs[index]),
+                                            ),
+                                          );
+                                        },
+                                        child: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Container(
+                                                padding: getPadding(
+                                                  all: 16,
+                                                ),
+                                                decoration: AppDecoration
+                                                    .outlineIndigo
+                                                    .copyWith(
+                                                  borderRadius:
+                                                      BorderRadiusStyle
+                                                          .roundedBorder16,
+                                                ),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        CustomIconButton(
+                                                          height: getSize(48),
+                                                          width: getSize(48),
+                                                          padding: getPadding(all: 8),
+                                                          child: Image.network(
+                                                            jobData[index]['logo']??'',
+                                                            fit: BoxFit.cover,),
+                                                        ),
+                                                        Expanded(
+                                                            child: Padding(
+                                                              padding: getPadding(
+                                                              left: 12,
+                                                              top: 4,
+                                                              bottom: 2,
+                                                          ),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {},
+                                                                child: Padding(
+                                                                  padding:
+                                                                      getPadding(
+                                                                    top: 5,
+                                                                  ),
+                                                                  child: Text(
+                                                                    allJobs[index]
+                                                                            [
+                                                                            'title'] ??
+                                                                        '',
+                                                                    style: CustomTextStyles
+                                                                        .labelLargeBluegray300SemiBold,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )),
+                                                        CustomImageView(
+                                                          svgPath: ImageConstant
+                                                              .imgBookmark,
+                                                          height: getSize(24),
+                                                          width: getSize(24),
+                                                          margin: getMargin(
+                                                            bottom: 25,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Padding(
+                                                      padding: getPadding(
+                                                        left: 60,
+                                                        top: 9,
+                                                      ),
+                                                      child: Text(
+                                                        allJobs[index]
+                                                                ['salary'] ??
+                                                            '',
+                                                        style: CustomTextStyles
+                                                            .labelLargeGray600_1,
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Padding(
+                                                        padding: getPadding(
+                                                          top: 13,
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            CustomElevatedButton(
+                                                              height:
+                                                                  getVerticalSize(
+                                                                      28),
+                                                              width:
+                                                                  getHorizontalSize(
+                                                                      70),
+                                                              text: "PHP",
+                                                              buttonTextStyle:
+                                                                  theme
+                                                                      .textTheme
+                                                                      .labelLarge!,
+                                                            ),
+                                                            CustomElevatedButton(
+                                                              height:
+                                                                  getVerticalSize(
+                                                                      28),
+                                                              width:
+                                                                  getHorizontalSize(
+                                                                      103),
+                                                              text: "JavaScrip",
+                                                              margin: getMargin(
+                                                                left: 8,
+                                                              ),
+                                                              buttonTextStyle:
+                                                                  theme
+                                                                      .textTheme
+                                                                      .labelLarge!,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                                height: getVerticalSize(16)),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ))))
                     ]))));
-  }
-
-  /// Navigates to the jobDetailsTabContainerScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the jobDetailsTabContainerScreen.
-  detail(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.jobDetailsTabContainerScreen);
   }
 }
