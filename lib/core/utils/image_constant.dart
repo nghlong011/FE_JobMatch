@@ -185,5 +185,4 @@ class ImageConstant {
   static String imgCalendar = '$imagePath/img_calendar.svg';
 
   static String imageNotFound = 'assets/images/image_not_found.png';
-
 }
