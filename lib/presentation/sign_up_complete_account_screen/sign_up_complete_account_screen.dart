@@ -5,7 +5,6 @@ import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 
 import 'Regis.dart';
 
-
 // ignore_for_file: must_be_immutable
 class SignUpCompleteAccountScreen extends StatelessWidget {
   SignUpCompleteAccountScreen({Key? key}) : super(key: key);
@@ -107,15 +106,15 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                             passwordController.text;
 
                                         // if (password.isNotEmpty && isValidPassword(password)) {
-                                          final userData = {
-                                            'email': email,
-                                            'password': password,
-                                            'role': "ROLE_JOB_SEEKER"
-                                          };
-                                          Provider.of<RegistrationProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .registerUser(userData, context);
+                                        final userData = {
+                                          'email': email,
+                                          'password': password,
+                                          'role': "ROLE_JOB_SEEKER"
+                                        };
+                                        Provider.of<RegistrationProvider>(
+                                                context,
+                                                listen: false)
+                                            .registerUser(userData, context);
                                         // } else {
                                         //   // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
                                         //   print('Invalid password');
@@ -174,10 +173,7 @@ class SignUpCompleteAccountScreen extends StatelessWidget {
                                                 .titleSmallErrorContainer)
                                       ]),
                                       textAlign: TextAlign.center)))
-                        ]))
-            )
-        )
-    );
+                        ])))));
   }
 
   /// Navigates back to the previous screen.

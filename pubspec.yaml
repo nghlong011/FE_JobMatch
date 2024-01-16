@@ -7,7 +7,8 @@ dependencies:
   flutter: 
     sdk: flutter
   provider: ^6.0.5
-  cached_network_image: ^3.2.1
+  cached_network_image:
+  html:
   flutter_svg: ^1.1.6
   pin_code_fields: ^7.3.0
   carousel_slider: ^4.0.0
@@ -22,6 +23,10 @@ dependencies:
   http:
   http_parser:
   jwt_decoder:
+  webview_flutter_plus:
+  flutter_html:
+  path_provider:
+  syncfusion_flutter_pdfviewer:
 dev_dependencies: 
   flutter_test: 
     sdk: flutter

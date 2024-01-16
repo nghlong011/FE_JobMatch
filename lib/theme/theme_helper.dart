@@ -167,7 +167,7 @@ class TextThemes {
           fontWeight: FontWeight.w500,
         ),
         labelMedium: TextStyle(
-          color: appTheme.gray5001,
+          color: appTheme.blueGray400,
           fontSize: getFontSize(
             10,
           ),
@@ -247,7 +247,7 @@ class ColorSchemes {
 /// Class containing custom colors for a primary theme.
 class PrimaryColors {
   // Black
-  Color get black900 => Color(0XFF000000);
+  Color get black900 => Color(0XFF212F3F);
 
   // Blue
   Color get blue500 => Color(0XFF2196F3);
@@ -301,7 +301,7 @@ class PrimaryColors {
   Color get tealA700 => Color(0XFF00CC9A);
 
   // White
-  Color get whiteA700 => Color(0XFFFEFEFE);
+  Color get whiteA700 => Color(0XFFFFFFFF);
   Color get whiteA70001 => Color(0XFFFDFCFF);
   Color get whiteA70002 => Color(0XFFFCFCFF);
 }

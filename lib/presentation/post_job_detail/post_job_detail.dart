@@ -1,5 +1,6 @@
 import 'package:flutter_html/flutter_html.dart';
 import 'package:nghlong011_s_application5/presentation/apply_job_screen/apply_job_screen.dart';
+import 'package:nghlong011_s_application5/presentation/read_cv/read_cv.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
@@ -9,24 +10,23 @@ import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 
 // ignore: must_be_immutable
-class JobDetailsTabContainerScreen extends StatefulWidget {
+class PostJobDetailsTabContainerScreen extends StatefulWidget {
   final Map<String, dynamic> jobDetails;
-  var company;
-  JobDetailsTabContainerScreen({
+  PostJobDetailsTabContainerScreen({
     Key? key,
-    required this.company,
     required this.jobDetails,
   }) : super(
           key: key,
         );
 
   @override
-  JobDetailsTabContainerScreenState createState() =>
-      JobDetailsTabContainerScreenState();
+  _PostJobDetailsTabContainerScreen createState() =>
+      _PostJobDetailsTabContainerScreen();
 }
 
-class JobDetailsTabContainerScreenState
-    extends State<JobDetailsTabContainerScreen> with TickerProviderStateMixin {
+class _PostJobDetailsTabContainerScreen
+    extends State<PostJobDetailsTabContainerScreen>
+    with TickerProviderStateMixin {
   late TabController tabviewController;
 
   @override
@@ -106,23 +106,6 @@ class JobDetailsTabContainerScreenState
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                height: getSize(79),
-                                width: getSize(79),
-                                padding: getPadding(
-                                  all: 19,
-                                ),
-                                decoration: AppDecoration.fillGray.copyWith(
-                                  borderRadius:
-                                      BorderRadiusStyle.roundedBorder39,
-                                ),
-                                child: CustomImageView(
-                                  url: widget.company['logo'],
-                                  height: getSize(40),
-                                  width: getSize(40),
-                                  alignment: Alignment.center,
-                                ),
-                              ),
                               Padding(
                                 padding: getPadding(
                                   top: 16,
@@ -130,16 +113,6 @@ class JobDetailsTabContainerScreenState
                                 child: Text(
                                   widget.jobDetails['title'],
                                   style: CustomTextStyles.titleSmallBold,
-                                ),
-                              ),
-                              Padding(
-                                padding: getPadding(
-                                  top: 7,
-                                ),
-                                child: Text(
-                                  widget.company['companyName'],
-                                  style: theme.textTheme.labelLarge,
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
                               Container(
@@ -318,42 +291,112 @@ class JobDetailsTabContainerScreenState
                                                                       .jobDetails[
                                                                   'description'],
                                                             ))),
-                                                    Container(
-                                                        margin: getMargin(
-                                                            bottom: 3),
-                                                        padding: getPadding(
-                                                            left: 24,
-                                                            top: 28,
-                                                            right: 24,
-                                                            bottom: 28),
-                                                        decoration: AppDecoration
-                                                            .gradientGrayToGray,
-                                                        child:
-                                                            CustomElevatedButton(
-                                                                text:
-                                                                    "Apply Now",
-                                                                margin:
-                                                                    getMargin(
-                                                                        bottom:
-                                                                            12),
-                                                                buttonStyle:
-                                                                    CustomButtonStyles
-                                                                        .fillPrimary,
-                                                                onTap: () {
-                                                                  Navigator
-                                                                      .pushReplacement(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder: (context) =>
-                                                                          ApplyJobScreen(
-                                                                              jobDetails: widget.jobDetails),
-                                                                    ),
-                                                                  );
-                                                                }
-                                                                )
-                                                    )
                                                   ]))
-                                        ]))))
+                                        ])))),
+                        Expanded(
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                    padding: getPadding(
+                                        left: 24, top: 16, right: 24),
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: widget
+                                          .jobDetails['jobApplicationEntities']
+                                          .length,
+                                      itemBuilder: (context, index) {
+                                        var jobData = widget.jobDetails[
+                                            'jobApplicationEntities'];
+                                        return GestureDetector(
+                                          onTap: () {},
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Container(
+                                                  padding: getPadding(all: 16),
+                                                  decoration: AppDecoration
+                                                      .outlineIndigo
+                                                      .copyWith(
+                                                    borderRadius:
+                                                        BorderRadiusStyle
+                                                            .roundedBorder16,
+                                                  ),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Padding(
+                                                              padding:
+                                                                  getPadding(
+                                                                top: 4,
+                                                                bottom: 10,
+                                                              ),
+                                                              child: Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      var data = jobData[index]['content'];
+                                                                      Navigator
+                                                                          .pushReplacement(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              ReadCV(data: data),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          getPadding(
+                                                                              top: 5),
+                                                                      child:
+                                                                          Text(
+                                                                        jobData[index]['status'] ??
+                                                                            '',
+                                                                        style: CustomTextStyles
+                                                                            .titleSmallBluegray300
+                                                                            .copyWith(
+                                                                          color:
+                                                                              Color(0XFF000000),
+                                                                        ),
+                                                                        maxLines:
+                                                                            2,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                  height: getVerticalSize(16)),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ))))
                       ],
                     ),
                   ),

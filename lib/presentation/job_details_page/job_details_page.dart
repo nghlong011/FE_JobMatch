@@ -76,13 +76,7 @@ class JobDetailsPageState extends State<JobDetailsPage>
                                                   onTapApplynow(context);
                                                 }))
                                       ]))
-                            ]
-                        )
-                    )
-                )
-            )
-        )
-    );
+                            ]))))));
   }
 
   /// Navigates to the applyJobScreen when the action is triggered.

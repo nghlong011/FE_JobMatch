@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
@@ -7,15 +8,21 @@ import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 
+import '../../data/repository/update_profile.dart';
+import '../profile_page/profile_provider.dart';
+
 // ignore_for_file: must_be_immutable
-class PersonalInfoScreen extends StatelessWidget {
+class PersonalInfoScreen extends StatefulWidget {
   PersonalInfoScreen({Key? key}) : super(key: key);
 
-  TextEditingController firstNameController = TextEditingController();
+  @override
+  _PersonalInfoScreen createState() => _PersonalInfoScreen();
+}
 
-  TextEditingController lastNameController = TextEditingController();
+class _PersonalInfoScreen extends State<PersonalInfoScreen> {
+  TextEditingController nameController = TextEditingController();
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
 
   TextEditingController phoneController = TextEditingController();
 
@@ -24,8 +31,24 @@ class PersonalInfoScreen extends StatelessWidget {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String? token = await getToken();
+      final userData = {
+        'email': 'admin',
+      };
+      var dataJobProvider =
+          Provider.of<ProfileProvider>(context, listen: false);
+      dataJobProvider.getProfile(userData, token!);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    var getProfileProvider = Provider.of<ProfileProvider>(context, listen: true);
+    var data = getProfileProvider.responseData;
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
@@ -56,34 +79,23 @@ class PersonalInfoScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("First Name",
+                              Text("Họ và tên",
                                   style: CustomTextStyles.titleSmallPrimary),
                               CustomTextFormField(
-                                  controller: firstNameController,
+                                  controller: nameController,
                                   margin: getMargin(top: 9),
-                                  hintText: "Gustavo",
+                                  hintText: data['name']??'',
                                   hintStyle:
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Last Name",
+                                  child: Text("Ngày sinh",
                                       style:
                                           CustomTextStyles.titleSmallPrimary)),
                               CustomTextFormField(
-                                  controller: lastNameController,
+                                  controller: dobController,
                                   margin: getMargin(top: 9),
-                                  hintText: "Lipshutz",
-                                  hintStyle:
-                                      CustomTextStyles.titleMediumBluegray400),
-                              Padding(
-                                  padding: getPadding(top: 18),
-                                  child: Text("Email",
-                                      style:
-                                          CustomTextStyles.titleSmallPrimary)),
-                              CustomTextFormField(
-                                  controller: emailController,
-                                  margin: getMargin(top: 9),
-                                  hintText: "xyz@gmail.com",
+                                  hintText: data['dob']??'',
                                   hintStyle:
                                       CustomTextStyles.titleMediumBluegray400,
                                   textInputType: TextInputType.emailAddress),
@@ -95,7 +107,7 @@ class PersonalInfoScreen extends StatelessWidget {
                               CustomTextFormField(
                                   controller: phoneController,
                                   margin: getMargin(top: 9),
-                                  hintText: "+1 1234567890",
+                                  hintText: data['phone']??'',
                                   hintStyle:
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
@@ -106,7 +118,7 @@ class PersonalInfoScreen extends StatelessWidget {
                               CustomTextFormField(
                                   controller: locationController,
                                   margin: getMargin(top: 9),
-                                  hintText: "Lorem ipsun",
+                                  hintText: data['address']??'',
                                   hintStyle:
                                       CustomTextStyles.titleMediumBluegray400,
                                   textInputAction: TextInputAction.done,
@@ -114,14 +126,39 @@ class PersonalInfoScreen extends StatelessWidget {
                                   contentPadding: getPadding(
                                       left: 16, top: 20, right: 16, bottom: 20))
                             ])))),
-            bottomNavigationBar: CustomElevatedButton(
-                text: "Save Changes",
-                margin: getMargin(left: 24, right: 24, bottom: 44),
-                buttonStyle: CustomButtonStyles.fillBlueGray,
-                buttonTextStyle: CustomTextStyles.titleMediumBluegray300,
-                onTap: () {
-                  onTapSavechanges(context);
-                })));
+            bottomNavigationBar: Consumer<UpdateProfile>(builder: (context, updateProfile, _) {
+              return CustomElevatedButton(
+                text: "Continue",
+                margin: getMargin(left: 24, right: 24, bottom: 40),
+                buttonStyle: CustomButtonStyles.fillPrimary,
+                onTap: updateProfile.isLoading
+                    ? null
+                    : () async {
+                  final String name =
+                      nameController.text;
+                  final String dob =
+                      dobController.text;
+                  final String phone =
+                      phoneController.text;
+                  final String location =
+                      locationController.text;
+                  FormData userData = FormData.fromMap({
+                    'name': name,
+                    'phone': phone,
+                    'address': location,
+                    'dob': dob
+                  });
+                  String? token = await getToken();
+                  await Provider.of<UpdateProfile>(context, listen: false)
+                      .updateProfile(userData, token!, context);
+                  if (updateProfile.succes) {
+                    onTapSavechanges(context);
+                  }
+                },
+              );
+            }),
+        )
+    );
   }
 
   /// Navigates back to the previous screen.

@@ -25,7 +25,6 @@ class CustomSearchView extends StatelessWidget {
     this.filled = true,
     this.validator,
     this.onFieldSubmitted,
-
   }) : super(
           key: key,
         );
@@ -71,7 +70,6 @@ class CustomSearchView extends StatelessWidget {
   final bool? filled;
 
   final FormFieldValidator<String>? validator;
-
 
   @override
   Widget build(BuildContext context) {

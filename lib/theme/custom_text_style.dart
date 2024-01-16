@@ -28,6 +28,10 @@ class CustomTextStyles {
         color: appTheme.blueGray300,
         fontWeight: FontWeight.w600,
       );
+  static get labelLargeBlack900SemiBold => theme.textTheme.labelLarge!.copyWith(
+        color: appTheme.black900,
+        fontWeight: FontWeight.w900,
+      );
   static get labelLargeDeeporangeA200 => theme.textTheme.labelLarge!.copyWith(
         color: appTheme.deepOrangeA200,
         fontWeight: FontWeight.w600,
@@ -206,6 +210,7 @@ class CustomTextStyles {
         fontWeight: FontWeight.w700,
       );
   static get titleSmallPrimarySemiBold => theme.textTheme.titleSmall!.copyWith(
+        fontSize: 14,
         color: theme.colorScheme.primary,
         fontWeight: FontWeight.w600,
       );

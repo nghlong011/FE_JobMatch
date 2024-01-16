@@ -33,7 +33,7 @@ class ApplyJobScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     File? file;
-    String? jobId;
+    int? jobId;
     String? status;
     return SafeArea(
         child: Scaffold(
@@ -89,9 +89,12 @@ class ApplyJobScreen extends StatelessWidget {
                                     children: [
                                       CustomImageView(
                                           onTap: () async {
-                                            FilePickerResult? result = await FilePicker.platform.pickFiles();
+                                            FilePickerResult? result =
+                                                await FilePicker.platform
+                                                    .pickFiles();
                                             if (result != null) {
-                                              String? filePath = result.files.single.path;
+                                              String? filePath =
+                                                  result.files.single.path;
 
                                               if (filePath != null) {
                                                 file = File(filePath);
@@ -122,18 +125,19 @@ class ApplyJobScreen extends StatelessWidget {
           onTap: applyJobProvider.isLoading
               ? null
               : () async {
+                  String fileName = file!.path.split('/').last;
                   FormData userData = FormData.fromMap({
-                    'jobid': jobId,
+                    'jobId': jobId,
                     'status': status,
-                    'content': file,
+                    'content': await MultipartFile.fromFile(
+                      file!.path,
+                      filename: fileName,
+                    ),
                   });
-
                   String? token = await getToken();
-                  print(token);
                   await Provider.of<ApplyJobProvider>(context, listen: false)
                       .jobApp(userData, token!, context);
-                  print(applyJobProvider.succes);
-                  if (!applyJobProvider.succes) {
+                  if (applyJobProvider.succes) {
                     onTapContinue(context);
                   }
                 },
@@ -143,7 +147,7 @@ class ApplyJobScreen extends StatelessWidget {
   }
 
   onTapArrowbackone(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homeContainerScreen);
+    Navigator.pop(context);
   }
 
   onTapContinue(BuildContext context) {
@@ -155,21 +159,5 @@ class ApplyJobScreen extends StatelessWidget {
               contentPadding: EdgeInsets.zero,
               insetPadding: const EdgeInsets.only(left: 0),
             ));
-  }
-
-  Future<void> uploadFileToServer(PlatformFile file) async {
-    if (file.path != null) {
-      FormData formData = FormData.fromMap({
-        'file': await MultipartFile.fromFile(
-          file.path!,
-          filename: file.name,
-        ),
-      });
-      Dio dio = Dio();
-      dio
-          .post('YOUR_UPLOAD_ENDPOINT', data: formData)
-          .then((response) {})
-          .catchError((error) {});
-    } else {}
   }
 }

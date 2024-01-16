@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/presentation/job_details_tab_container_screen/job_details_tab_container_screen.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
-import 'package:nghlong011_s_application5/widgets/app_bar/appbar_title.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 
@@ -61,9 +61,6 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
             ),
           ),
           centerTitle: true,
-          title: AppbarTitle(
-            text: widget.jobDetails['companyName'] ?? '',
-          ),
           actions: [
             AppbarImage(
               svgPath: ImageConstant.imgBookmark,
@@ -123,8 +120,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                       BorderRadiusStyle.roundedBorder39,
                                 ),
                                 child: CustomImageView(
-                                  svgPath: ImageConstant
-                                      .imgCardano1Secondarycontainer,
+                                  url: widget.jobDetails['logo'],
                                   height: getSize(40),
                                   width: getSize(40),
                                   alignment: Alignment.center,
@@ -137,24 +133,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                 child: Text(
                                   widget.jobDetails['companyName'] ?? '',
                                   style: CustomTextStyles.titleSmallBold,
-                                ),
-                              ),
-                              Padding(
-                                padding: getPadding(
-                                  left: 1,
-                                  top: 12,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    CustomElevatedButton(
-                                      height: getVerticalSize(28),
-                                      width: getHorizontalSize(69),
-                                      text: widget.jobDetails['location'] ?? '',
-                                      buttonTextStyle:
-                                          theme.textTheme.bodySmall!,
-                                    ),
-                                  ],
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             ],
@@ -180,7 +159,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                         padding: getPadding(
                                                             left: 24),
                                                         child: Text(
-                                                            "Company Description",
+                                                            "Thông tin công ty",
                                                             style: CustomTextStyles
                                                                 .titleMediumBluegray900)),
                                                     Align(
@@ -194,18 +173,11 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                                 left: 31,
                                                                 top: 13,
                                                                 right: 24),
-                                                            child: Text(
-                                                                widget.jobDetails[
-                                                                        'description'] ??
-                                                                    '',
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: CustomTextStyles
-                                                                    .titleSmallGray600
-                                                                    .copyWith(
-                                                                        height:
-                                                                            1.57)))),
+                                                            child: Html(
+                                                              data: widget
+                                                                      .jobDetails[
+                                                                  'description'],
+                                                            ))),
                                                   ]))
                                         ])))),
                         Expanded(
@@ -217,17 +189,26 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: allJobs.length,
-                                      itemBuilder: (context, index) {
+                                      itemBuilder: (context, jobIndex) {
+                                        var jobs = widget.jobDetails['jobs']
+                                            as List<dynamic>;
+                                        var job = jobs[jobIndex];
+                                        var jobTitle = job['title'];
+                                        var jobSalary = job['salary'];
+                                        var logo = widget.jobDetails['logo'];
+                                        var companyName =
+                                            widget.jobDetails['companyName'];
+                                        var jobLocation = job['location'];
                                         return GestureDetector(
                                           onTap: () {
-                                            print(allJobs[index]);
                                             Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     JobDetailsTabContainerScreen(
-                                                        jobDetails:
-                                                            allJobs[index]),
+                                                        jobDetails: job,
+                                                        company:
+                                                            widget.jobDetails),
                                               ),
                                             );
                                           },
@@ -261,15 +242,15 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                             height: getSize(48),
                                                             width: getSize(48),
                                                             padding: getPadding(
-                                                              all: 8,
-                                                            ),
+                                                                all: 8),
                                                             child:
-                                                                CustomImageView(
-                                                              svgPath: ImageConstant
-                                                                  .imgGroupPrimary,
+                                                                Image.network(
+                                                              logo,
+                                                              fit: BoxFit.cover,
                                                             ),
                                                           ),
-                                                          Padding(
+                                                          Expanded(
+                                                              child: Padding(
                                                             padding: getPadding(
                                                               left: 12,
                                                               top: 4,
@@ -283,28 +264,19 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                                   MainAxisAlignment
                                                                       .start,
                                                               children: [
-                                                                GestureDetector(
-                                                                  onTap: () {},
-                                                                  child:
-                                                                      Padding(
-                                                                    padding:
-                                                                        getPadding(
-                                                                      top: 5,
-                                                                    ),
-                                                                    child: Text(
-                                                                      allJobs[index]
-                                                                              [
-                                                                              'companyName'] ??
-                                                                          '',
-                                                                      style: CustomTextStyles
-                                                                          .labelLargeBluegray300SemiBold,
-                                                                    ),
-                                                                  ),
+                                                                Text(
+                                                                  jobTitle,
+                                                                  style: CustomTextStyles
+                                                                      .labelLargeBlack900SemiBold,
+                                                                ),
+                                                                Text(
+                                                                  companyName,
+                                                                  style: CustomTextStyles
+                                                                      .labelLargeBluegray300SemiBold,
                                                                 ),
                                                               ],
                                                             ),
-                                                          ),
-                                                          Spacer(),
+                                                          )),
                                                           CustomImageView(
                                                             svgPath:
                                                                 ImageConstant
@@ -316,19 +288,6 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                             ),
                                                           ),
                                                         ],
-                                                      ),
-                                                      Padding(
-                                                        padding: getPadding(
-                                                          left: 60,
-                                                          top: 9,
-                                                        ),
-                                                        child: Text(
-                                                          allJobs[index][
-                                                                  'description'] ??
-                                                              '',
-                                                          style: CustomTextStyles
-                                                              .labelLargeGray600_1,
-                                                        ),
                                                       ),
                                                       Align(
                                                         alignment:
@@ -342,22 +301,33 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: [
-                                                              CustomElevatedButton(
+                                                              Expanded(
+                                                                  child:
+                                                                      CustomElevatedButton(
                                                                 height:
                                                                     getVerticalSize(
                                                                         28),
-                                                                width:
-                                                                    getHorizontalSize(
-                                                                        70),
-                                                                text: allJobs[
-                                                                            index]
-                                                                        [
-                                                                        'location'] ??
-                                                                    '',
+                                                                text: jobSalary,
                                                                 buttonTextStyle: theme
                                                                     .textTheme
                                                                     .labelLarge!,
-                                                              ),
+                                                              )),
+                                                              Expanded(
+                                                                  child:
+                                                                      CustomElevatedButton(
+                                                                height:
+                                                                    getVerticalSize(
+                                                                        28),
+                                                                text:
+                                                                    jobLocation,
+                                                                margin:
+                                                                    getMargin(
+                                                                  left: 8,
+                                                                ),
+                                                                buttonTextStyle: theme
+                                                                    .textTheme
+                                                                    .labelLarge!,
+                                                              ))
                                                             ],
                                                           ),
                                                         ),

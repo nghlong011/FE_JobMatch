@@ -6,7 +6,6 @@ import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 
 import 'login.dart';
 
-
 // ignore_for_file: must_be_immutable
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -88,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                               margin: getMargin(top: 9),
                               hintText: "Nhập email",
                               hintStyle:
-                              CustomTextStyles.titleMediumBluegray400,
+                                  CustomTextStyles.titleMediumBluegray400,
                               textInputAction: TextInputAction.done,
                               textInputType: TextInputType.emailAddress,
                               contentPadding: getPadding(
@@ -105,49 +104,46 @@ class LoginScreen extends StatelessWidget {
                               margin: getMargin(top: 9),
                               hintText: "Nhập mật khẩu",
                               hintStyle:
-                              CustomTextStyles.titleMediumBluegray400,
+                                  CustomTextStyles.titleMediumBluegray400,
                               textInputAction: TextInputAction.done,
                               textInputType: TextInputType.visiblePassword,
                               suffix: Container(
                                   margin: getMargin(
                                       left: 30, top: 14, right: 16, bottom: 14),
                                   child: CustomImageView(
-                                      svgPath: ImageConstant.imgCheckmark)
-                              ),
+                                      svgPath: ImageConstant.imgCheckmark)),
                               suffixConstraints: BoxConstraints(
                                   maxHeight: getVerticalSize(52)),
-
                               contentPadding:
-                              getPadding(left: 16, top: 15, bottom: 15)),
+                                  getPadding(left: 16, top: 15, bottom: 15)),
                           Consumer<LoginProvider>(
                               builder: (context, loginProvider, _) {
-                                return CustomElevatedButton(
-                                    onTap: loginProvider.isLoading
-                                        ? null
-                                        : () {
-                                      final String email =
-                                          emailController.text;
-                                      final String password =
-                                          passwordController.text;
+                            return CustomElevatedButton(
+                                onTap: loginProvider.isLoading
+                                    ? null
+                                    : () {
+                                        final String email =
+                                            emailController.text;
+                                        final String password =
+                                            passwordController.text;
 
-                                      if (password.isNotEmpty) {
-                                        final userData = {
-                                          'email': email,
-                                          'password': password,
-                                        };
-                                        Provider.of<LoginProvider>(
-                                            context,
-                                            listen: false)
-                                            .loginUser(userData, context);
-                                      } else {
-                                        // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
-                                        print('Invalid password');
-                                      }
-                                    },
-                                    text: "Đăng Nhập",
-                                    margin: getMargin(top: 40),
-                                    buttonStyle: CustomButtonStyles.fillPrimary);
-                              }),
+                                        if (password.isNotEmpty) {
+                                          final userData = {
+                                            'email': email,
+                                            'password': password,
+                                          };
+                                          Provider.of<LoginProvider>(context,
+                                                  listen: false)
+                                              .loginUser(userData, context);
+                                        } else {
+                                          // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
+                                          print('Invalid password');
+                                        }
+                                      },
+                                text: "Đăng Nhập",
+                                margin: getMargin(top: 40),
+                                buttonStyle: CustomButtonStyles.fillPrimary);
+                          }),
                           Padding(
                               padding: getPadding(left: 41, top: 26, right: 41),
                               child: Row(
@@ -170,13 +166,13 @@ class LoginScreen extends StatelessWidget {
                                   ])),
                           Container(
                               width: getHorizontalSize(245),
-                              margin: getMargin(
-                                  top: 84),
+                              margin: getMargin(top: 84),
                               child: Center(
                                 child: RichText(
                                     text: TextSpan(children: [
                                       TextSpan(
-                                          text: "Bằng cách đăng ký bạn đồng ý với ",
+                                          text:
+                                              "Bằng cách đăng ký bạn đồng ý với ",
                                           style: CustomTextStyles
                                               .titleSmallBluegray400SemiBold),
                                       TextSpan(
@@ -188,7 +184,8 @@ class LoginScreen extends StatelessWidget {
                                           style: CustomTextStyles
                                               .titleSmallBluegray400SemiBold),
                                       TextSpan(
-                                          text: "Điều khoản sử dụng của chúng tôi",
+                                          text:
+                                              "Điều khoản sử dụng của chúng tôi",
                                           style: CustomTextStyles
                                               .titleSmallErrorContainer)
                                     ]),
@@ -204,7 +201,6 @@ class LoginScreen extends StatelessWidget {
   onTapImgImage(BuildContext context) {
     Navigator.pop(context);
   }
-
 
   /// Navigates to the signUpCompleteAccountScreen when the action is triggered.
   ///

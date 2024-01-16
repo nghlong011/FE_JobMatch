@@ -1,5 +1,7 @@
+import 'package:nghlong011_s_application5/presentation/profile_page/profile_provider.dart';
+
+import '../edit_skill_screen/edit_skill.dart';
 import '../profile_page/widgets/chipviewskills_item_widget.dart';
-import '../profile_page/widgets/profile_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
@@ -11,14 +13,41 @@ import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
 import '../settings_screen/settings_screen.dart';
 
 // ignore_for_file: must_be_immutable
-class ProfilePage extends StatelessWidget {
+
+class ProfilePage extends StatefulWidget {
   ProfilePage({Key? key}) : super(key: key);
 
-  bool opentowork = false;
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
 
+class _ProfilePageState extends State<ProfilePage> {
+  bool opentowork = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      String? token = await getToken();
+      final userData = {
+        'email': 'admin',
+      };
+      var dataJobProvider = Provider.of<ProfileProvider>(context, listen: false);
+      dataJobProvider.getProfile(userData,token!);
+
+    });
+  }
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
+    var getProfileProvider = Provider.of<ProfileProvider>(context, listen: true);
+    var data = getProfileProvider.responseData;
+    List<String> education =
+    (data['profileEntity']['education'] ?? '')
+        .split(',');
+    List<String> language =
+    (data['language'] ?? '')
+        .split(',');
+    List<dynamic> skill = data['profileEntity']['skillEntities'];
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
@@ -44,8 +73,7 @@ class ProfilePage extends StatelessWidget {
                             builder: (context) => SettingsScreen(),
                           ),
                         );
-                      }
-                      )
+                      })
                 ]),
             body: SizedBox(
                 width: mediaQueryData.size.width,
@@ -81,6 +109,7 @@ class ProfilePage extends StatelessWidget {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       CustomImageView(
+
                                                           height: getSize(89),
                                                           width: getSize(89),
                                                           radius: BorderRadius
@@ -179,7 +208,7 @@ class ProfilePage extends StatelessWidget {
                                             width: getHorizontalSize(272),
                                             margin:
                                                 getMargin(top: 14, right: 22),
-                                            child: Text("Lập trình viên",
+                                            child: Text(data['profileEntity']['description'],
                                                 maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: CustomTextStyles
@@ -215,6 +244,14 @@ class ProfilePage extends StatelessWidget {
                                                           style: CustomTextStyles
                                                               .titleMediumInter)),
                                                   CustomImageView(
+                                                    onTap: (){
+                                                      Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => EditSkillScreen(),
+                                                        ),
+                                                      );
+                                                    },
                                                       svgPath: ImageConstant
                                                           .imgEditsquare,
                                                       height: getSize(24),
@@ -227,70 +264,52 @@ class ProfilePage extends StatelessWidget {
                                                 runSpacing: getVerticalSize(12),
                                                 spacing: getHorizontalSize(12),
                                                 children: List<Widget>.generate(
-                                                    8,
+                                                    skill.length,
                                                     (index) =>
-                                                        ChipviewskillsItemWidget())))
+                                                        ChipviewskillsItemWidget(data: skill[index] ))))
                                       ])),
                               Container(
                                   margin:
-                                      getMargin(left: 24, top: 24, right: 24),
+                                  getMargin(left: 24, top: 22, right: 24),
                                   padding: getPadding(
-                                      left: 16, top: 15, right: 16, bottom: 15),
+                                      left: 16, top: 14, right: 16, bottom: 14),
                                   decoration: AppDecoration.outlineIndigo
                                       .copyWith(
-                                          borderRadius:
-                                              BorderRadiusStyle.circleBorder12),
+                                      borderRadius:
+                                      BorderRadiusStyle.circleBorder12),
                                   child: Column(
                                       mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
-                                                  padding: getPadding(top: 2),
-                                                  child: Text(
-                                                      "Kinh nghiệm làm việc",
+                                                  padding: getPadding(
+                                                      top: 2, bottom: 1),
+                                                  child: Text("Kinh nghiệm làm việc",
                                                       style: CustomTextStyles
-                                                          .titleMediumBold)),
+                                                          .titleMediumInter)),
                                               CustomImageView(
                                                   svgPath: ImageConstant
-                                                      .imgEditsquarePrimary,
+                                                      .imgEditsquare,
                                                   height: getSize(24),
                                                   width: getSize(24))
                                             ]),
-                                        Padding(
-                                            padding: getPadding(top: 22),
-                                            child: ListView.separated(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                shrinkWrap: true,
-                                                separatorBuilder:
-                                                    (context, index) {
-                                                  return Padding(
-                                                      padding: getPadding(
-                                                          top: 11.5,
-                                                          bottom: 11.5),
-                                                      child: SizedBox(
-                                                          width:
-                                                              getHorizontalSize(
-                                                                  235),
-                                                          child: Divider(
-                                                              height:
-                                                                  getVerticalSize(
-                                                                      1),
-                                                              thickness:
-                                                                  getVerticalSize(
-                                                                      1),
-                                                              color: appTheme
-                                                                  .indigo50)));
-                                                },
-                                                itemCount: 3,
-                                                itemBuilder: (context, index) {
-                                                  return ProfileItemWidget();
-                                                }))
+                                        Container(
+                                            width: getHorizontalSize(272),
+                                            margin:
+                                            getMargin(top: 14, right: 22),
+                                            child: Text(data['profileEntity']['workExperience'],
+                                                maxLines: 5,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: CustomTextStyles
+                                                    .titleSmallBluegray400_1
+                                                    .copyWith(height: 1.57)))
                                       ])),
                               Container(
                                   margin:
@@ -347,7 +366,7 @@ class ProfilePage extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                "Đại học Thuỷ Lợi",
+                                                                education[0],
                                                                 style: CustomTextStyles
                                                                     .titleSmallPrimarySemiBold),
                                                             Padding(
@@ -361,7 +380,7 @@ class ProfilePage extends StatelessWidget {
                                                                               top:
                                                                                   1),
                                                                           child: Text(
-                                                                              "Hệ thống thông tin",
+                                                                              education[1],
                                                                               style: theme.textTheme.labelLarge)),
                                                                       Padding(
                                                                           padding: getPadding(
@@ -377,7 +396,7 @@ class ProfilePage extends StatelessWidget {
                                                                               left:
                                                                                   4),
                                                                           child: Text(
-                                                                              "2019",
+                                                                              education[2],
                                                                               style: theme.textTheme.labelLarge))
                                                                     ]))
                                                           ])))
@@ -389,5 +408,4 @@ class ProfilePage extends StatelessWidget {
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
-
 }

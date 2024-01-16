@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 
-
 class RegistrationProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   bool _isLoading = false;
@@ -17,7 +16,6 @@ class RegistrationProvider extends ChangeNotifier {
       notifyListeners();
       print(response.data['messageCode']);
       Navigator.pushNamed(context, AppRoutes.loginScreen);
-
     } catch (error) {
       print('Error registering user: $error');
     }

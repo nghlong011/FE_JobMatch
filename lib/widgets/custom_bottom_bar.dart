@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 
+import '../data/repository/auth.dart';
+
 // ignore: must_be_immutable
 class CustomBottomBar extends StatefulWidget {
   CustomBottomBar({this.onChanged});
@@ -46,9 +48,37 @@ class CustomBottomBarState extends State<CustomBottomBar> {
       type: BottomBarEnum.Profile,
     )
   ];
+  List<BottomMenuModel> bottomMenuEmployerList = [
+    BottomMenuModel(
+      icon: ImageConstant.imgNavhome,
+      activeIcon: ImageConstant.imgNavhome,
+      title: "Trang chủ",
+      type: BottomBarEnum.Home,
+    ),
+    BottomMenuModel(
+      icon: ImageConstant.imgNavsaved,
+      activeIcon: ImageConstant.imgNavsaved,
+      title: "Đăng tin tuyển dụng",
+      type: BottomBarEnum.Saved,
+    ),
+    BottomMenuModel(
+      icon: ImageConstant.imgNavmessage,
+      activeIcon: ImageConstant.imgNavmessage,
+      title: "Message",
+      type: BottomBarEnum.Message,
+    ),
+    BottomMenuModel(
+      icon: ImageConstant.imgNavprofile,
+      activeIcon: ImageConstant.imgNavprofile,
+      title: "Tài khoản",
+      type: BottomBarEnum.Profile,
+    )
+  ];
 
   @override
   Widget build(BuildContext context) {
+    bool userType = Provider.of<AuthProvider>(context, listen: false).userType;
+    print(userType);
     return Container(
       height: getVerticalSize(60),
       decoration: BoxDecoration(
@@ -65,7 +95,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           ),
         ],
       ),
-      child: BottomNavigationBar(
+      child: !userType ? BottomNavigationBar(
         backgroundColor: Colors.transparent,
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -116,6 +146,72 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                   ),
                   child: Text(
                     bottomMenuList[index].title ?? "",
+                    style: CustomTextStyles.labelLargeInterPrimary.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            label: '',
+          );
+        }),
+        onTap: (index) {
+          selectedIndex = index;
+          widget.onChanged?.call(bottomMenuList[index].type);
+          setState(() {});
+        },
+      ): BottomNavigationBar(
+        backgroundColor: Colors.transparent,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedFontSize: 0,
+        elevation: 0,
+        currentIndex: selectedIndex,
+        type: BottomNavigationBarType.fixed,
+        items: List.generate(bottomMenuEmployerList.length, (index) {
+          return BottomNavigationBarItem(
+            icon: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomImageView(
+                  svgPath: bottomMenuEmployerList[index].icon,
+                  height: getSize(24),
+                  width: getSize(24),
+                  color: appTheme.blueGray300,
+                ),
+                Padding(
+                  padding: getPadding(
+                    top: 3,
+                  ),
+                  child: Text(
+                    bottomMenuEmployerList[index].title ?? "",
+                    style: CustomTextStyles.labelLargeInterBluegray300.copyWith(
+                      color: appTheme.blueGray300,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            activeIcon: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomImageView(
+                  svgPath: bottomMenuEmployerList[index].activeIcon,
+                  height: getSize(24),
+                  width: getSize(24),
+                  color: theme.colorScheme.primary,
+                ),
+                Padding(
+                  padding: getPadding(
+                    top: 2,
+                  ),
+                  child: Text(
+                    bottomMenuEmployerList[index].title ?? "",
                     style: CustomTextStyles.labelLargeInterPrimary.copyWith(
                       color: theme.colorScheme.primary,
                     ),

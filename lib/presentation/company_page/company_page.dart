@@ -1,16 +1,13 @@
-
 import '../../widgets/app_bar/appbar_image_1.dart';
 import '../../widgets/app_bar/appbar_title.dart';
-import '../../widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
 
+import '../../widgets/custom_search_view.dart';
 import '../company_detail/company_detail.dart';
 import '../home_page/home_page_provider.dart';
-import '../search_screen/search_screen.dart';
-
 
 class CompanyPage extends StatefulWidget {
   const CompanyPage({Key? key}) : super(key: key);
@@ -22,7 +19,7 @@ class CompanyPage extends StatefulWidget {
 // ignore_for_file: must_be_immutable
 class _CompanyPageState extends State<CompanyPage> {
   TextEditingController searchController = TextEditingController();
-
+  var _jobData;
   @override
   void initState() {
     super.initState();
@@ -30,6 +27,9 @@ class _CompanyPageState extends State<CompanyPage> {
       String? token = await getToken();
       var dataJobProvider = Provider.of<GetJobProvider>(context, listen: false);
       dataJobProvider.getJob(token!);
+      setState(() {
+        _jobData = dataJobProvider.responseData;
+      });
     });
   }
 
@@ -63,36 +63,46 @@ class _CompanyPageState extends State<CompanyPage> {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Công ty")
-            ),
+                title: AppbarTitle(text: "Công ty")),
             body: SizedBox(
                 width: double.maxFinite,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: CustomElevatedButton(
-                          onTap: (){
-                            print('click');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchScreen(allJobs: allJobs),
-                              ),
-                            );
+                      CustomSearchView(
+                          onFieldSubmitted: (value) async {
+                            List<dynamic> searchResults = jobData
+                                .where((company) =>
+                            company['companyName'] != null &&
+                                company['companyName'].toString().toLowerCase().trim().contains(value.toLowerCase().trim()))
+                                .toList();
+                            print(value);
+                            print("Dữ liệu trước khi tìm kiếm: $jobData");
+                            print("Dữ liệu sau khi tìm kiếm: $searchResults");
+                            setState(() {
+                              _jobData = searchResults;
+                            });
+                            // }
                           },
-                          margin: getMargin(),
-                          height: getVerticalSize(28),
-                          width: getHorizontalSize(300),
-                          text: "Tìm kiếm...",
-                          buttonTextStyle: theme.textTheme.labelLarge!,
-                          leftIcon: CustomImageView(
-                            svgPath: ImageConstant.imgSearch,
-                          ),
-                        ),
-                      ),
+                          margin: getMargin(top: 30),
+                          controller: searchController,
+                          hintText: "Search...",
+                          hintStyle: CustomTextStyles.titleMediumBluegray400,
+                          prefix: Container(
+                              margin: getMargin(
+                                  left: 16, top: 17, right: 8, bottom: 17),
+                              child: CustomImageView(
+                                  svgPath: ImageConstant.imgSearch)),
+                          prefixConstraints:
+                              BoxConstraints(maxHeight: getVerticalSize(52)),
+                          suffix: Container(
+                              margin: getMargin(
+                                  left: 30, top: 17, right: 16, bottom: 17),
+                              child: CustomImageView(
+                                  svgPath: ImageConstant.imgFilterPrimary)),
+                          suffixConstraints:
+                              BoxConstraints(maxHeight: getVerticalSize(52))),
                       Padding(
                           padding: getPadding(left: 24, top: 22),
                           child: Text("Danh sách công ty",
@@ -102,27 +112,25 @@ class _CompanyPageState extends State<CompanyPage> {
                               alignment: Alignment.center,
                               child: Padding(
                                   padding:
-                                  getPadding(left: 24, top: 16, right: 24),
-                                  child: ListView.builder(
+                                      getPadding(left: 24, top: 16, right: 24),
+                                  child: _jobData != null ?
+                                  ListView.builder(
                                     shrinkWrap: true,
-                                    itemCount: jobData.length,
+                                    itemCount: _jobData.length,
                                     itemBuilder: (context, index) {
-                                      List<String> locations = (jobData[index]['location'] ?? '').split('/');
-                                      if (index < 0 || index >= jobData.length) {
-                                        return SizedBox.shrink(); // Hoặc widget rỗng tùy theo trường hợp của bạn
-                                      }
+                                      List<String> locations =
+                                          (_jobData[index]['location'] ?? '')
+                                              .split('/');
                                       return GestureDetector(
                                         onTap: () {
-                                          print(jobData[index]);
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   CompanyDetailsScreen(
                                                       jobDetails:
-                                                      jobData[index]),
+                                                          jobData[index]),
                                             ),
-
                                           );
                                         },
                                         child: Column(
@@ -131,23 +139,34 @@ class _CompanyPageState extends State<CompanyPage> {
                                               alignment: Alignment.center,
                                               child: Container(
                                                 padding: getPadding(all: 16),
-                                                decoration: AppDecoration.outlineIndigo.copyWith(
-                                                  borderRadius: BorderRadiusStyle.roundedBorder16,
+                                                decoration: AppDecoration
+                                                    .outlineIndigo
+                                                    .copyWith(
+                                                  borderRadius:
+                                                      BorderRadiusStyle
+                                                          .roundedBorder16,
                                                 ),
                                                 child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Row(
                                                       children: [
                                                         CustomIconButton(
                                                           height: getSize(48),
                                                           width: getSize(48),
-                                                          padding: getPadding(all: 8),
+                                                          padding: getPadding(
+                                                              all: 8),
                                                           child: Image.network(
-                                                            jobData[index]['logo']??'',
-                                                            fit: BoxFit.cover,),
+                                                            _jobData[index]
+                                                                    ['logo'] ??
+                                                                '',
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                         Expanded(
                                                           child: Padding(
@@ -157,28 +176,43 @@ class _CompanyPageState extends State<CompanyPage> {
                                                               bottom: 2,
                                                             ),
                                                             child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 GestureDetector(
-                                                                  onTap: () {
-                                                                  },
-                                                                  child: Padding(
-                                                                    padding: getPadding(top: 5),
+                                                                  onTap: () {},
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        getPadding(
+                                                                            top:
+                                                                                5),
                                                                     child: Text(
-                                                                      jobData[index]['companyName'] ?? '',
-                                                                      style: CustomTextStyles.labelLargeBluegray300SemiBold,
-                                                                      maxLines: 2,
+                                                                      _jobData[index]
+                                                                              [
+                                                                              'companyName'] ??
+                                                                          '',
+                                                                      style: CustomTextStyles
+                                                                          .labelLargeBluegray300SemiBold,
+                                                                      maxLines:
+                                                                          2,
                                                                     ),
                                                                   ),
                                                                 ),
                                                                 Padding(
-                                                                  padding: getPadding(
+                                                                  padding:
+                                                                      getPadding(
                                                                     top: 9,
                                                                   ),
                                                                   child: Text(
-                                                                    locations[0],
-                                                                    style: CustomTextStyles.labelLargeGray600_1,
+                                                                    locations[
+                                                                        0],
+                                                                    style: CustomTextStyles
+                                                                        .labelLargeGray600_1,
                                                                   ),
                                                                 ),
                                                               ],
@@ -186,28 +220,32 @@ class _CompanyPageState extends State<CompanyPage> {
                                                           ),
                                                         ),
                                                         CustomImageView(
-                                                          svgPath: ImageConstant.imgBookmark,
+                                                          svgPath: ImageConstant
+                                                              .imgBookmark,
                                                           height: getSize(24),
                                                           width: getSize(24),
-                                                          margin: getMargin(bottom: 25),
+                                                          margin: getMargin(
+                                                              bottom: 25),
                                                         ),
                                                       ],
                                                     ),
-
                                                   ],
                                                 ),
                                               ),
                                             ),
-
                                             SizedBox(
                                                 height: getVerticalSize(16)),
                                           ],
                                         ),
                                       );
                                     },
-                                  ))))
+                                  )
+                                : CircularProgressIndicator(),
+                              )
+                          ))
                     ]))));
   }
+
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }

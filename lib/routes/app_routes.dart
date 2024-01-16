@@ -12,7 +12,6 @@ import 'package:nghlong011_s_application5/presentation/job_details_tab_container
 import 'package:nghlong011_s_application5/presentation/message_action_screen/message_action_screen.dart';
 import 'package:nghlong011_s_application5/presentation/chat_screen/chat_screen.dart';
 import 'package:nghlong011_s_application5/presentation/apply_job_screen/apply_job_screen.dart';
-import 'package:nghlong011_s_application5/presentation/notifications_my_proposals_tab_container_screen/notifications_my_proposals_tab_container_screen.dart';
 import 'package:nghlong011_s_application5/presentation/settings_screen/settings_screen.dart';
 import 'package:nghlong011_s_application5/presentation/personal_info_screen/personal_info_screen.dart';
 import 'package:nghlong011_s_application5/presentation/experience_setting_screen/experience_setting_screen.dart';
@@ -20,8 +19,10 @@ import 'package:nghlong011_s_application5/presentation/new_position_screen/new_p
 import 'package:nghlong011_s_application5/presentation/add_new_education_screen/add_new_education_screen.dart';
 import 'package:nghlong011_s_application5/presentation/privacy_screen/privacy_screen.dart';
 import 'package:nghlong011_s_application5/presentation/language_screen/language_screen.dart';
-import 'package:nghlong011_s_application5/presentation/notifications_screen/notifications_screen.dart';
+
 import 'package:nghlong011_s_application5/presentation/app_navigation_screen/app_navigation_screen.dart';
+
+import '../presentation/home_employer/home_employer.dart';
 
 class AppRoutes {
   static const String splashScreen = '/splash_screen';
@@ -39,11 +40,16 @@ class AppRoutes {
 
   static const String loginScreen = '/login_screen';
 
+  static const String readCV = '/read_cv';
+
   static const String homePage = '/home_page';
+  static const String homePageE = '/home_page_employer';
 
   static const String companyPage = '/company_page';
 
   static const String homeContainerScreen = '/home_container_screen';
+
+  static const String homeEmployer = '/home_employer';
 
   static const String searchScreen = '/search_screen';
 
@@ -59,6 +65,8 @@ class AppRoutes {
   static const String chatScreen = '/chat_screen';
 
   static const String savedPage = '/saved_page';
+
+  static const String postPage = '/post_job';
 
   static const String savedDetailJobPage = '/saved_detail_job_page';
 
@@ -103,13 +111,20 @@ class AppRoutes {
     jobTypeScreen: (context) => JobTypeScreen(),
     loginScreen: (context) => LoginScreen(),
     homeContainerScreen: (context) => HomeContainerScreen(),
-    searchScreen: (context) => SearchScreen(allJobs: [],),
-    jobDetailsTabContainerScreen: (context) => JobDetailsTabContainerScreen(jobDetails: {},),
+    homeEmployer: (context) => HomeContainerEmployerScreen(),
+    searchScreen: (context) => SearchScreen(
+          jobData: [],
+        ),
+    jobDetailsTabContainerScreen: (context) => JobDetailsTabContainerScreen(
+          jobDetails: {},
+          company: {},
+        ),
     messageActionScreen: (context) => MessageActionScreen(),
     chatScreen: (context) => ChatScreen(),
-    applyJobScreen: (context) => ApplyJobScreen(jobDetails: {},),
-    notificationsMyProposalsTabContainerScreen: (context) =>
-        NotificationsMyProposalsTabContainerScreen(),
+    applyJobScreen: (context) => ApplyJobScreen(
+          jobDetails: {},
+        ),
+
     settingsScreen: (context) => SettingsScreen(),
     personalInfoScreen: (context) => PersonalInfoScreen(),
     experienceSettingScreen: (context) => ExperienceSettingScreen(),
@@ -117,7 +132,7 @@ class AppRoutes {
     addNewEducationScreen: (context) => AddNewEducationScreen(),
     privacyScreen: (context) => PrivacyScreen(),
     languageScreen: (context) => LanguageScreen(),
-    notificationsScreen: (context) => NotificationsScreen(),
+
     appNavigationScreen: (context) => AppNavigationScreen()
   };
 }

@@ -50,7 +50,7 @@ class ApplyJobPopupDialog extends StatelessWidget {
             ),
           ),
           CustomElevatedButton(
-            onTap: (){
+            onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

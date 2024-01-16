@@ -1,5 +1,4 @@
 import 'package:nghlong011_s_application5/presentation/search_screen/SearchProvider.dart';
-
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import '../job_details_tab_container_screen/job_details_tab_container_screen.dart';
@@ -11,18 +10,18 @@ import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_search_view.dart';
 
 // ignore_for_file: must_be_immutable
-class SearchScreen extends StatefulWidget {
+class SearchCompanyScreen extends StatefulWidget {
   var jobData;
-  SearchScreen({
+  SearchCompanyScreen({
     Key? key,
     required this.jobData,
   }) : super(key: key);
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _SearchCompanyScreenState createState() => _SearchCompanyScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchCompanyScreenState extends State<SearchCompanyScreen> {
   TextEditingController searchController = TextEditingController();
   var _jobData;
 
@@ -49,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Tìm Việc")),
+                title: AppbarTitle(text: "Tìm Công ty")),
             body: Container(
                 width: double.maxFinite,
                 child: Column(
@@ -91,8 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: CustomImageView(
                                     svgPath: ImageConstant.imgFilterPrimary)),
                             suffixConstraints:
-                                BoxConstraints(maxHeight: getVerticalSize(52))
-                        );
+                                BoxConstraints(maxHeight: getVerticalSize(52)));
                       }),
                       Expanded(
                           child: Align(

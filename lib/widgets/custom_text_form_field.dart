@@ -80,7 +80,6 @@ class CustomTextFormField extends StatelessWidget {
 
   final String? errorText;
 
-
   @override
   Widget build(BuildContext context) {
     return alignment != null
