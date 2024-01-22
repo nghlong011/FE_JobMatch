@@ -159,7 +159,7 @@ class TextThemes {
           fontWeight: FontWeight.w700,
         ),
         labelLarge: TextStyle(
-          color: appTheme.blueGray400,
+          color: Color(0XFF0E0E0E),
           fontSize: getFontSize(
             12,
           ),
@@ -170,6 +170,14 @@ class TextThemes {
           color: appTheme.blueGray400,
           fontSize: getFontSize(
             10,
+          ),
+          fontFamily: 'Plus Jakarta Sans',
+          fontWeight: FontWeight.w600,
+        ),
+        labelSmall: TextStyle(
+          color: appTheme.blueGray400,
+          fontSize: getFontSize(
+            5,
           ),
           fontFamily: 'Plus Jakarta Sans',
           fontWeight: FontWeight.w600,
@@ -190,6 +198,7 @@ class TextThemes {
           fontFamily: 'Plus Jakarta Sans',
           fontWeight: FontWeight.w500,
         ),
+
       );
 }
 
@@ -247,7 +256,7 @@ class ColorSchemes {
 /// Class containing custom colors for a primary theme.
 class PrimaryColors {
   // Black
-  Color get black900 => Color(0XFF212F3F);
+  Color get black900 => Color(0XFF000000);
 
   // Blue
   Color get blue500 => Color(0XFF2196F3);
@@ -281,7 +290,7 @@ class PrimaryColors {
 
   // Green
   Color get green50 => Color(0XFFE6F9F0);
-  Color get greenA700 => Color(0XFF00C566);
+  Color get greenA700 => Color(0xFFFF00b14f);
 
   // Indigo
   Color get indigo50 => Color(0XFFE3E7EB);
@@ -300,6 +309,8 @@ class PrimaryColors {
   // Teal
   Color get tealA700 => Color(0XFF00CC9A);
 
+  //Yellow
+  Color get yellow => Color(0xffFBBC04);
   // White
   Color get whiteA700 => Color(0XFFFFFFFF);
   Color get whiteA70001 => Color(0XFFFDFCFF);

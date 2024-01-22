@@ -1,3 +1,5 @@
+import 'package:nghlong011_s_application5/presentation/add_new_education_screen/add_new_education_screen.dart';
+import 'package:nghlong011_s_application5/presentation/new_position_screen/new_position_screen.dart';
 import 'package:nghlong011_s_application5/presentation/profile_page/profile_provider.dart';
 
 import '../edit_skill_screen/edit_skill.dart';
@@ -31,23 +33,39 @@ class _ProfilePageState extends State<ProfilePage> {
       final userData = {
         'email': 'admin',
       };
-      var dataJobProvider = Provider.of<ProfileProvider>(context, listen: false);
-      dataJobProvider.getProfile(userData,token!);
-
+      var dataJobProvider =
+          Provider.of<ProfileProvider>(context, listen: false);
+      dataJobProvider.getProfile(userData, token!);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
-    var getProfileProvider = Provider.of<ProfileProvider>(context, listen: true);
+    var getProfileProvider =
+        Provider.of<ProfileProvider>(context, listen: true);
     var data = getProfileProvider.responseData;
-    List<String> education =
-    (data['profileEntity']['education'] ?? '')
-        .split(',');
-    List<String> language =
-    (data['language'] ?? '')
-        .split(',');
-    List<dynamic> skill = data['profileEntity']['skillEntities'];
+    List<String> education =[];
+    List<dynamic> languages = [];
+    List<dynamic> skill = [];
+    List<Map<String, dynamic>> languageObjects = [];
+    var dataprofile = data['profileEntity'];
+    if(dataprofile != null && dataprofile != []){
+      if (data['profileEntity']['education'] != null) {
+        education =
+            (data['profileEntity']['education'] ?? '').split(',');
+      }
+      languages = (data['profileEntity']['language'] ?? '').split(',');
+      skill = data['profileEntity']['skillEntities'];
+      for (int i = 0; i < languages.length; i++) {
+        Map<String, dynamic> languageObject = {
+          'languageid': i + 1,
+          'name': languages[i],
+        };
+        languageObjects.add(languageObject);
+      }
+    }
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
@@ -67,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       margin:
                           getMargin(left: 24, top: 13, right: 24, bottom: 13),
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SettingsScreen(),
@@ -109,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       CustomImageView(
-
+                                                        url: data['avatar'],
                                                           height: getSize(89),
                                                           width: getSize(89),
                                                           radius: BorderRadius
@@ -119,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       Padding(
                                                           padding: getPadding(
                                                               top: 9),
-                                                          child: Text("Long",
+                                                          child: Text("Minh",
                                                               style: CustomTextStyles
                                                                   .titleMediumErrorContainer)),
                                                     ])))
@@ -208,7 +226,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                             width: getHorizontalSize(272),
                                             margin:
                                                 getMargin(top: 14, right: 22),
-                                            child: Text(data['profileEntity']['description'],
+                                            child: Text(
+                                                data['profileEntity']
+                                                    ['description'],
                                                 maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: CustomTextStyles
@@ -244,14 +264,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                                           style: CustomTextStyles
                                                               .titleMediumInter)),
                                                   CustomImageView(
-                                                    onTap: (){
-                                                      Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) => EditSkillScreen(),
-                                                        ),
-                                                      );
-                                                    },
+                                                      onTap: () {
+                                                        Navigator
+                                                            .push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditSkillScreen(),
+                                                          ),
+                                                        );
+                                                      },
                                                       svgPath: ImageConstant
                                                           .imgEditsquare,
                                                       height: getSize(24),
@@ -266,35 +288,105 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 children: List<Widget>.generate(
                                                     skill.length,
                                                     (index) =>
-                                                        ChipviewskillsItemWidget(data: skill[index] ))))
+                                                        ChipviewskillsItemWidget(
+                                                            data:
+                                                                skill[index]))))
                                       ])),
                               Container(
                                   margin:
-                                  getMargin(left: 24, top: 22, right: 24),
+                                  getMargin(left: 23, top: 24, right: 23),
                                   padding: getPadding(
-                                      left: 16, top: 14, right: 16, bottom: 14),
+                                      left: 9, top: 16, right: 9, bottom: 16),
                                   decoration: AppDecoration.outlineIndigo
                                       .copyWith(
                                       borderRadius:
                                       BorderRadiusStyle.circleBorder12),
                                   child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                            padding:
+                                            getPadding(left: 7, right: 7),
+                                            child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceBetween,
+                                                children: [
+                                                  Padding(
+                                                      padding: getPadding(
+                                                          top: 1, bottom: 2),
+                                                      child: Text("Ngôn ngữ",
+                                                          style: CustomTextStyles
+                                                              .titleMediumInter)),
+                                                  CustomImageView(
+                                                      onTap: () {
+                                                        Navigator
+                                                            .push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditSkillScreen(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      svgPath: ImageConstant
+                                                          .imgEditsquare,
+                                                      height: getSize(24),
+                                                      width: getSize(24))
+                                                ])),
+                                        Padding(
+                                            padding:
+                                            getPadding(top: 12, bottom: 17),
+                                            child: Wrap(
+                                                runSpacing: getVerticalSize(12),
+                                                spacing: getHorizontalSize(12),
+                                                children: List<Widget>.generate(
+                                                    languageObjects.length,
+                                                        (index) =>
+                                                        ChipviewskillsItemWidget(
+                                                            data:
+                                                            languageObjects[index]))))
+                                      ])),
+                              Container(
+                                  margin:
+                                      getMargin(left: 24, top: 22, right: 24),
+                                  padding: getPadding(
+                                      left: 16, top: 14, right: 16, bottom: 14),
+                                  decoration: AppDecoration.outlineIndigo
+                                      .copyWith(
+                                          borderRadius:
+                                              BorderRadiusStyle.circleBorder12),
+                                  child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Padding(
                                                   padding: getPadding(
                                                       top: 2, bottom: 1),
-                                                  child: Text("Kinh nghiệm làm việc",
+                                                  child: Text(
+                                                      "Kinh nghiệm làm việc",
                                                       style: CustomTextStyles
                                                           .titleMediumInter)),
                                               CustomImageView(
+                                                  onTap: () {
+                                                    Navigator
+                                                        .push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            NewPositionScreen(),
+                                                      ),
+                                                    );
+                                                  },
                                                   svgPath: ImageConstant
                                                       .imgEditsquare,
                                                   height: getSize(24),
@@ -303,8 +395,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                         Container(
                                             width: getHorizontalSize(272),
                                             margin:
-                                            getMargin(top: 14, right: 22),
-                                            child: Text(data['profileEntity']['workExperience'],
+                                                getMargin(top: 14, right: 22),
+                                            child: Text(
+                                                data['profileEntity']
+                                                    ['workExperience'],
                                                 maxLines: 5,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: CustomTextStyles
@@ -337,6 +431,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       style: CustomTextStyles
                                                           .titleMediumBold_1)),
                                               CustomImageView(
+                                                  onTap: () {
+                                                    Navigator
+                                                        .push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            AddNewEducationScreen(),
+                                                      ),
+                                                    );
+                                                  },
                                                   svgPath: ImageConstant
                                                       .imgEditsquarePrimary,
                                                   height: getSize(24),
@@ -365,8 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                               MainAxisAlignment
                                                                   .start,
                                                           children: [
-                                                            Text(
-                                                                education[0],
+                                                            Text(education[0],
                                                                 style: CustomTextStyles
                                                                     .titleSmallPrimarySemiBold),
                                                             Padding(

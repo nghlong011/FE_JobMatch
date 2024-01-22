@@ -313,11 +313,16 @@ class JobDetailsTabContainerScreenState
                                                                 left: 31,
                                                                 top: 13,
                                                                 right: 24),
-                                                            child: Html(
+                                                            child: widget
+                                                                .jobDetails[
+                                                            'description'] != null ?
+                                                            Html(
                                                               data: widget
                                                                       .jobDetails[
                                                                   'description'],
-                                                            ))),
+                                                            ):Container()
+                                                        )
+                                                    ),
                                                     Container(
                                                         margin: getMargin(
                                                             bottom: 3),
@@ -341,7 +346,7 @@ class JobDetailsTabContainerScreenState
                                                                         .fillPrimary,
                                                                 onTap: () {
                                                                   Navigator
-                                                                      .pushReplacement(
+                                                                      .push(
                                                                     context,
                                                                     MaterialPageRoute(
                                                                       builder: (context) =>

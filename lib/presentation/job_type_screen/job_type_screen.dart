@@ -3,9 +3,15 @@ import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
 
-class JobTypeScreen extends StatelessWidget {
+class JobTypeScreen extends StatefulWidget {
   const JobTypeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<JobTypeScreen> createState() => _JobTypeScreenState();
+}
+
+class _JobTypeScreenState extends State<JobTypeScreen> {
+  int selectedOption = 1;
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -28,13 +34,13 @@ class JobTypeScreen extends StatelessWidget {
                           }),
                       Padding(
                           padding: getPadding(top: 47),
-                          child: Text("Choose Job Type",
+                          child: Text("Chọn mục đích",
                               style: theme.textTheme.headlineSmall)),
                       Container(
                           width: getHorizontalSize(209),
                           margin: getMargin(top: 7),
                           child: Text(
-                              "Are you looking for a new job or\nlooking for new employee",
+                              "Bạn đang tìm kiếm công việc \n hay tìm kiếm ứng viên",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
@@ -46,104 +52,95 @@ class JobTypeScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                    child: Container(
-                                        margin: getMargin(right: 7),
-                                        padding: getPadding(
-                                            left: 18,
-                                            top: 24,
-                                            right: 18,
-                                            bottom: 24),
-                                        decoration: AppDecoration.outlinePrimary
-                                            .copyWith(
-                                                borderRadius: BorderRadiusStyle
-                                                    .roundedBorder24),
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              CustomIconButton(
-                                                  height: getSize(64),
-                                                  width: getSize(64),
-                                                  padding: getPadding(all: 16),
-                                                  decoration:
-                                                      IconButtonStyleHelper
-                                                          .fillPrimary,
-                                                  child: CustomImageView(
-                                                      svgPath: ImageConstant
-                                                          .imgWork)),
-                                              Padding(
-                                                  padding: getPadding(top: 29),
-                                                  child: Text("Find a job",
-                                                      style: theme.textTheme
-                                                          .titleMedium)),
-                                              Container(
-                                                  width: getHorizontalSize(120),
-                                                  margin: getMargin(top: 9),
-                                                  child: Text(
-                                                      "It’s easy to find your dream jobs here with us.",
-                                                      maxLines: 3,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: theme
-                                                          .textTheme.labelLarge!
-                                                          .copyWith(
-                                                              height: 1.67)))
-                                            ]))),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedOption = 1;
+                                        });
+                                      },
+                                      child: Container(
+                                          margin: getMargin(right: 7),
+                                          padding: getPadding(
+                                              left: 18,
+                                              top: 24,
+                                              right: 18,
+                                              bottom: 24),
+                                          decoration:  selectedOption == 1 ? AppDecoration.outlinePrimary
+                                              .copyWith(
+                                              borderRadius:BorderRadiusStyle.roundedBorder24
+                                          ):AppDecoration
+                                              .outlineOnPrimary
+                                              .copyWith(
+                                              borderRadius: BorderRadiusStyle
+                                                  .roundedBorder24),
+                                          child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                CustomIconButton(
+                                                    height: getSize(64),
+                                                    width: getSize(64),
+                                                    padding: getPadding(all: 16),
+                                                    child: CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgWork)),
+                                                Padding(
+                                                    padding: getPadding(top: 29),
+                                                    child: Text("Tìm kiếm công việc",
+                                                        textAlign: TextAlign.center,
+                                                        style: theme.textTheme
+                                                            .titleMedium)),
+
+                                              ])),
+                                    )),
                                 Expanded(
-                                    child: Container(
-                                        margin: getMargin(left: 7),
-                                        padding: getPadding(
-                                            left: 14,
-                                            top: 24,
-                                            right: 14,
-                                            bottom: 24),
-                                        decoration: AppDecoration
-                                            .outlineOnPrimary
-                                            .copyWith(
-                                                borderRadius: BorderRadiusStyle
-                                                    .roundedBorder24),
-                                        child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              CustomIconButton(
-                                                  height: getSize(64),
-                                                  width: getSize(64),
-                                                  padding: getPadding(all: 16),
-                                                  decoration:
-                                                      IconButtonStyleHelper
-                                                          .fillOrange,
-                                                  child: CustomImageView(
-                                                      svgPath: ImageConstant
-                                                          .imgProfile)),
-                                              Padding(
-                                                  padding: getPadding(top: 29),
-                                                  child: Text("Find a employee",
-                                                      style: theme.textTheme
-                                                          .titleMedium)),
-                                              Container(
-                                                  width: getHorizontalSize(109),
-                                                  margin: getMargin(top: 9),
-                                                  child: Text(
-                                                      "It’s easy to find eployees here with us.",
-                                                      maxLines: 3,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: theme
-                                                          .textTheme.labelLarge!
-                                                          .copyWith(
-                                                              height: 1.67)))
-                                            ])))
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedOption = 2;
+                                        });
+                                      },
+                                      child: Container(
+                                          margin: getMargin(left: 7),
+                                          padding: getPadding(
+                                              left: 14,
+                                              top: 24,
+                                              right: 14,
+                                              bottom: 24),
+                                          decoration: selectedOption == 2 ? AppDecoration.outlinePrimary
+                                              .copyWith(
+                                              borderRadius:BorderRadiusStyle.roundedBorder24
+                                          ):AppDecoration
+                                              .outlineOnPrimary
+                                              .copyWith(
+                                              borderRadius: BorderRadiusStyle
+                                                  .roundedBorder24),
+                                          child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              children: [
+                                                CustomIconButton(
+                                                    height: getSize(64),
+                                                    width: getSize(64),
+                                                    padding: getPadding(all: 16),
+                                                    child: CustomImageView(
+                                                        svgPath: ImageConstant
+                                                            .imgProfile)),
+                                                Padding(
+                                                    padding: getPadding(top: 29),
+                                                    child: Text("Tìm kiếm ứng viên",
+                                                        textAlign:
+                                                        TextAlign.center,
+                                                        style: theme.textTheme
+                                                            .titleMedium)),
+                                              ])),
+                                    ))
                               ]))
                     ])),
             bottomNavigationBar: CustomElevatedButton(
-                text: "Continue",
+                text: "Tiếp tục",
                 margin: getMargin(left: 24, right: 24, bottom: 55),
                 buttonStyle: CustomButtonStyles.fillPrimary,
                 onTap: () {
@@ -151,19 +148,11 @@ class JobTypeScreen extends StatelessWidget {
                 })));
   }
 
-  /// Navigates to the homeContainerScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the homeContainerScreen.
+
   onTapContinue(BuildContext context) {
-    Navigator.popAndPushNamed(context, AppRoutes.homeContainerScreen);
+    Navigator.pushNamed(context, AppRoutes.signUpCompleteAccountScreen,arguments: selectedOption);
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
   onTapImgImage(BuildContext context) {
     Navigator.pop(context);
   }

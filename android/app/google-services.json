@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "857896438344",
+    "project_id": "jobfinder-t1ienx",
+    "storage_bucket": "jobfinder-t1ienx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857896438344:android:0c580ed4d395fa0c81a67d",
+        "android_client_info": {
+          "package_name": "com.nghlongsapplication.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857896438344-5jf0tf73ghca759e0mrosdm6uik98pan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLnrF6vT3BdYxNXoUB9RGwO90t5J9gf9g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857896438344-5jf0tf73ghca759e0mrosdm6uik98pan.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "857896438344-ttn6ll67i3coj5foqn7b1dde9pirs1d7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.freelanceApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

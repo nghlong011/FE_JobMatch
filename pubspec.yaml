@@ -7,14 +7,17 @@ dependencies:
   flutter: 
     sdk: flutter
   provider: ^6.0.5
+  date_time_picker:
+  google_nav_bar:
   cached_network_image:
+  image_picker:
   html:
   flutter_svg: ^1.1.6
   pin_code_fields: ^7.3.0
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.0+2
   dotted_border: 2.0.0+3
-  intl: ^0.18.0
+  intl: ^0.17.0
   dio:
   connectivity_plus:
   shared_preferences:
@@ -27,6 +30,10 @@ dependencies:
   flutter_html:
   path_provider:
   syncfusion_flutter_pdfviewer:
+  firebase_core: ^2.24.2
+  firebase_auth:
+  cloud_firestore:
+  firebase_database:
 dev_dependencies: 
   flutter_test: 
     sdk: flutter

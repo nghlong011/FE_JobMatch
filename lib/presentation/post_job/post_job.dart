@@ -1,9 +1,9 @@
 import 'dart:io';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/presentation/post_job/post_job_provider.dart';
-import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_title.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
@@ -24,7 +24,7 @@ class PostJobScreen extends StatefulWidget {
 class _PostJobScreen extends State<PostJobScreen> {
   TextEditingController titleController = TextEditingController();
 
-  TextEditingController expirationDateController = TextEditingController();
+  TextEditingController numberController = TextEditingController();
 
   TextEditingController salaryController = TextEditingController();
 
@@ -49,14 +49,14 @@ class _PostJobScreen extends State<PostJobScreen> {
       dataJobProvider.getProfile(userData, token!);
     });
   }
-
+  String selectedDate = '';
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     return SafeArea(
         child: Scaffold(
           backgroundColor: appTheme.whiteA70001,
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: CustomAppBar(
               leadingWidth: getHorizontalSize(48),
               leading: AppbarImage1(
@@ -68,10 +68,7 @@ class _PostJobScreen extends State<PostJobScreen> {
               centerTitle: true,
               title: AppbarTitle(text: "Đăng tin"),
               actions: [
-                AppbarImage(
-                    svgPath: ImageConstant.imgEditsquare,
-                    margin:
-                    getMargin(left: 24, top: 13, right: 24, bottom: 13))
+
               ]),
           body: Form(
               key: _formKey,
@@ -83,10 +80,19 @@ class _PostJobScreen extends State<PostJobScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Tiêu đề",
+                            Text("Tiêu đề công việc",
                                 style: CustomTextStyles.titleSmallPrimary),
                             CustomTextFormField(
                                 controller: titleController,
+                                margin: getMargin(top: 9),
+                                hintText: '',
+                                hintStyle:
+                                CustomTextStyles.titleMediumBluegray400),
+
+                            Text("Số lượng tuyển",
+                                style: CustomTextStyles.titleSmallPrimary),
+                            CustomTextFormField(
+                                controller: numberController,
                                 margin: getMargin(top: 9),
                                 hintText: '',
                                 hintStyle:
@@ -96,13 +102,28 @@ class _PostJobScreen extends State<PostJobScreen> {
                                 child: Text("Hạn đăng tuyển",
                                     style:
                                     CustomTextStyles.titleSmallPrimary)),
-                            CustomTextFormField(
-                                controller: expirationDateController,
-                                margin: getMargin(top: 9),
-                                hintText: '19/04/2024',
-                                hintStyle:
-                                CustomTextStyles.titleMediumBluegray400,
-                                textInputType: TextInputType.emailAddress),
+                            DateTimePicker(
+                              type: DateTimePickerType.date,
+                              dateMask: 'dd/MM/yyyy',
+                              initialValue: DateTime.now().toString(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2101),
+                              icon: Icon(Icons.event),
+                              dateLabelText: 'Date',
+                              onChanged: (val) {
+                                setState(() {
+                                  selectedDate = val;
+                                });
+                              },
+                              validator: (val) {
+                                // Custom validation logic if needed
+                                return null;
+                              },
+                              onSaved: (val) {
+                                // Save the selected date if needed
+                              },
+
+                            ),
                             Padding(
                                 padding: getPadding(top: 18),
                                 child: Text("Mức lương ",
@@ -166,24 +187,26 @@ class _PostJobScreen extends State<PostJobScreen> {
                     titleController.text;
                 final String salary =
                     salaryController.text;
-                final String expirationDate =
-                    expirationDateController.text;
                 final String location =
                     locationController.text;
                 final String description =
                     descriptionController.text;
                 final String workExperience =
                     workExperienceController.text;
+                final String number =
+                    numberController.text;
                 Directory tempDir = await getTemporaryDirectory();
                 String tempPath = tempDir.path;
                 File htmlFile = createHtmlFile(tempPath, description);
                 FormData userData = FormData.fromMap({
                   'description':await MultipartFile.fromFile(htmlFile.path, filename: 'document.html'),
-                  'salary':salary,
                   'title':title,
-                  'expirationDate':expirationDate,
+                  'expirationDate':selectedDate,
                   'location':location,
+                  'salary':salary,
                   'workExperience':workExperience,
+                  'status':1,
+                  'numberRecruit': number,
                 });
                 String? token = await getToken();
                 await Provider.of<PostJobProvider>(context, listen: false)
@@ -207,18 +230,10 @@ class _PostJobScreen extends State<PostJobScreen> {
     return file;
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
   onTapSavechanges(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.homePageE);
   }

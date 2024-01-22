@@ -62,7 +62,7 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Personal Info"),
+                title: AppbarTitle(text: "Sửa thông tin cá nhân"),
                 actions: [
                   AppbarImage(
                       svgPath: ImageConstant.imgEditsquare,
@@ -101,7 +101,7 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                                   textInputType: TextInputType.emailAddress),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Phone ",
+                                  child: Text("Số điện thoại",
                                       style:
                                           CustomTextStyles.titleSmallPrimary)),
                               CustomTextFormField(
@@ -112,7 +112,7 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Location",
+                                  child: Text("Địa chỉ",
                                       style:
                                           CustomTextStyles.titleSmallPrimary)),
                               CustomTextFormField(
@@ -128,7 +128,7 @@ class _PersonalInfoScreen extends State<PersonalInfoScreen> {
                             ])))),
             bottomNavigationBar: Consumer<UpdateProfile>(builder: (context, updateProfile, _) {
               return CustomElevatedButton(
-                text: "Continue",
+                text: "Sửa",
                 margin: getMargin(left: 24, right: 24, bottom: 40),
                 buttonStyle: CustomButtonStyles.fillPrimary,
                 onTap: updateProfile.isLoading

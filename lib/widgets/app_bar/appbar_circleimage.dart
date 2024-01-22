@@ -4,6 +4,7 @@ import 'package:nghlong011_s_application5/core/app_export.dart';
 // ignore: must_be_immutable
 class AppbarCircleimage extends StatelessWidget {
   AppbarCircleimage({
+    this.url,
     Key? key,
     this.imagePath,
     this.svgPath,
@@ -12,7 +13,7 @@ class AppbarCircleimage extends StatelessWidget {
   }) : super(
           key: key,
         );
-
+  String? url;
   String? imagePath;
 
   String? svgPath;

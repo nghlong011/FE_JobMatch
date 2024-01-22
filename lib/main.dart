@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nghlong011_s_application5/data/repository/auth.dart';
 import 'package:nghlong011_s_application5/data/repository/update_profile.dart';
+import 'package:nghlong011_s_application5/firebase_options.dart';
 import 'package:nghlong011_s_application5/presentation/apply_job_screen/ApplyJobProvider.dart';
+import 'package:nghlong011_s_application5/presentation/change_password/change_pass_provider.dart';
+import 'package:nghlong011_s_application5/presentation/create_company/create_company_provider.dart';
 import 'package:nghlong011_s_application5/presentation/edit_skill_screen/edit_skill_provider.dart';
 import 'package:nghlong011_s_application5/presentation/home_page/home_page_provider.dart';
 import 'package:nghlong011_s_application5/presentation/home_page_employer/get_job.dart';
+import 'package:nghlong011_s_application5/presentation/home_user/get_user.dart';
 import 'package:nghlong011_s_application5/presentation/login_screen/login.dart';
 import 'package:nghlong011_s_application5/presentation/post_job/post_job_provider.dart';
 import 'package:nghlong011_s_application5/presentation/profile_page/profile_provider.dart';
@@ -16,13 +21,15 @@ import 'package:nghlong011_s_application5/theme/theme_helper.dart';
 import 'package:nghlong011_s_application5/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
 
-  ///Please update theme as per your need if required.
   ThemeHelper().changeTheme('primary');
   runApp(MyApp());
 }
@@ -44,6 +51,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UpdateProfile()),
         ChangeNotifierProvider(create: (context) => GetJobEmployerProvider()),
         ChangeNotifierProvider(create: (context) => PostJobProvider()),
+        ChangeNotifierProvider(create: (context) => GetUserProvider()),
+        ChangeNotifierProvider(create: (context) => CreateCompanyProvider()),
+        ChangeNotifierProvider(create: (context) => ChangePass()),
       ],
       child: MaterialApp(
         theme: theme,

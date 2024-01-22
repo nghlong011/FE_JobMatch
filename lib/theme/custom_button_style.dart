@@ -60,10 +60,22 @@ class CustomButtonStyles {
   static ButtonStyle get fillRedTL4 => ElevatedButton.styleFrom(
         backgroundColor: appTheme.red500,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(getHorizontalSize(4.00)),
+          borderRadius: BorderRadius.circular(getHorizontalSize(24.00)),
         ),
       );
 
+  static ButtonStyle get green => ElevatedButton.styleFrom(
+    backgroundColor: appTheme.greenA700,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(getHorizontalSize(24.00)),
+    ),
+  );
+  static ButtonStyle get yellow => ElevatedButton.styleFrom(
+    backgroundColor: appTheme.yellow,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(getHorizontalSize(24.00)),
+    ),
+  );
   // Outline button style
   static ButtonStyle get outlineIndigo => OutlinedButton.styleFrom(
         backgroundColor: theme.colorScheme.onPrimaryContainer.withOpacity(1),

@@ -3,13 +3,15 @@ import 'package:nghlong011_s_application5/presentation/job_details_tab_container
 import '../../widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
-import 'package:nghlong011_s_application5/widgets/app_bar/appbar_circleimage.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_subtitle.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_subtitle_2.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 import 'package:nghlong011_s_application5/widgets/custom_icon_button.dart';
 
+import '../../widgets/custom_search_view.dart';
+import '../company_page/company_page.dart';
+import '../profile_page/profile_provider.dart';
 import '../search_screen/search_screen.dart';
 import 'home_page_provider.dart';
 
@@ -31,14 +33,21 @@ class _HomePageState extends State<HomePage> {
       String? token = await getToken();
       var dataJobProvider = Provider.of<GetJobProvider>(context, listen: false);
       dataJobProvider.getJob(token!);
+      final userData = {
+        'email': 'admin',
+      };
+      var dataProvider = Provider.of<ProfileProvider>(context, listen: false);
+      dataProvider.getProfile(userData, token);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
     var getJobProvider = Provider.of<GetJobProvider>(context, listen: true);
     var jobData = getJobProvider.responseData;
+    var getProfileProvider =
+        Provider.of<ProfileProvider>(context, listen: true);
+    var dataProfile = getProfileProvider.responseData;
     List<dynamic> allJobs = [];
     if (jobData != null) {
       for (var company in jobData) {
@@ -50,15 +59,18 @@ class _HomePageState extends State<HomePage> {
     } else {
       // Xử lý khi jobData là null
     }
+    String avatarUrl = dataProfile?['avatar'] ?? '';
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
             resizeToAvoidBottomInset: false,
             appBar: CustomAppBar(
                 leadingWidth: getHorizontalSize(74),
-                leading: AppbarCircleimage(
-                    imagePath: ImageConstant.imgImage50x50,
-                    margin: getMargin(left: 24)),
+                leading: CustomImageView(
+                    url: avatarUrl,
+                    height: getSize(89),
+                    width: getSize(89),
+                    radius: BorderRadius.circular(getHorizontalSize(44))),
                 title: Padding(
                     padding: getPadding(left: 10),
                     child: Column(
@@ -81,31 +93,104 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: CustomElevatedButton(
-                          onTap: () {
-                            print('click');
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    SearchScreen(jobData: jobData),
+                      CustomSearchView(
+                          margin: getMargin(top: 10, left: 25, right: 25),
+                          controller: searchController,
+                          hintText: "Tìm kiếm .....",
+                          hintStyle: CustomTextStyles.titleMediumBluegray400,
+                          prefix: Container(
+                              margin: getMargin(
+                                  left: 16, top: 17, right: 8, bottom: 17),
+                              child: CustomImageView(
+                                  svgPath: ImageConstant.imgSearch)),
+                          prefixConstraints:
+                          BoxConstraints(maxHeight: getVerticalSize(52)),
+                          suffix: Container(
+                              margin: getMargin(
+                                  left: 30, top: 17, right: 16, bottom: 17),
+                              child: CustomImageView(
+                                  svgPath: ImageConstant.imgFilterPrimary)),
+                          suffixConstraints:
+                          BoxConstraints(maxHeight: getVerticalSize(52)),
+                          contentPadding: getPadding(top: 12, bottom: 12)),
+                      Padding(
+                        padding: getPadding(top: 25),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: Column(
+                                children: [
+                                  CustomImageView(
+                                    height: getVerticalSize(28),
+                                    width: getHorizontalSize(28),
+                                    imagePath: ImageConstant.imgJob,
+                                    onTap: () {
+                                      print('click');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SearchScreen(jobData: jobData),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Text('Gợi ý')
+                                ],
                               ),
-                            );
-                          },
-                          margin: getMargin(),
-                          height: getVerticalSize(28),
-                          width: getHorizontalSize(300),
-                          text: "Tìm kiếm...",
-                          buttonTextStyle: theme.textTheme.labelLarge!,
-                          leftIcon: CustomImageView(
-                            svgPath: ImageConstant.imgSearch,
-                          ),
+                            ),
+                            Container(
+                              margin: getMargin(left: 25,right: 25),
+                              child: Column(
+                                children: [
+                                  CustomImageView(
+                                    height: getVerticalSize(28),
+                                    width: getHorizontalSize(28),
+                                    imagePath: ImageConstant.imgCom,
+                                    onTap: () {
+                                      print('click');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompanyPage(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Text('Công ty')
+                                ],
+                              ),
+                            ),
+                            Container(
+                              child: Column(
+                                children: [
+                                  CustomImageView(
+                                    height: getVerticalSize(28),
+                                    width: getHorizontalSize(28),
+                                    imagePath: ImageConstant.imgJobCate,
+                                    onTap: () {
+                                      print('click');
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CompanyPage(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Text('Thể loại')
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(
-                          padding: getPadding(left: 24, top: 25),
+                          padding: getPadding(left: 25, top: 25),
                           child: Text("Việc làm phù hợp",
                               style: CustomTextStyles.titleMedium18)),
                       Align(
@@ -158,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                "Senior UI/UX Designer",
+                                                                "Lập Trình Web .NET",
                                                                 style: CustomTextStyles
                                                                     .titleSmallGray5001Bold),
                                                             Opacity(
@@ -169,7 +254,9 @@ class _HomePageState extends State<HomePage> {
                                                                             top:
                                                                                 7),
                                                                     child: Text(
-                                                                        "Shopee",
+                                                                        "Công ty CTC",
+                                                                        maxLines:
+                                                                            2,
                                                                         style: CustomTextStyles
                                                                             .labelLargeGray5001SemiBold))),
                                                             Opacity(
@@ -180,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                                                                             top:
                                                                                 11),
                                                                     child: Text(
-                                                                        "Jakarta, Indonesia (Remote)",
+                                                                        "Hồ Chí Minh",
                                                                         style: CustomTextStyles
                                                                             .labelLargeGray5001_2))),
                                                             Padding(
@@ -188,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                                                                     getPadding(
                                                                         top: 9),
                                                                 child: Text(
-                                                                    "1100 - 12.000/Month",
+                                                                    "11.000 - 12.000 USD",
                                                                     style: CustomTextStyles
                                                                         .labelLargeGray5001_1)),
                                                             Padding(
@@ -198,22 +285,6 @@ class _HomePageState extends State<HomePage> {
                                                                             17),
                                                                 child: Row(
                                                                     children: [
-                                                                      Container(
-                                                                          padding: getPadding(
-                                                                              left:
-                                                                                  12,
-                                                                              top:
-                                                                                  5,
-                                                                              right:
-                                                                                  12,
-                                                                              bottom:
-                                                                                  5),
-                                                                          decoration: AppDecoration.fillOnPrimaryContainer1.copyWith(
-                                                                              borderRadius: BorderRadiusStyle
-                                                                                  .roundedBorder16),
-                                                                          child: Text(
-                                                                              "Fulltime",
-                                                                              style: CustomTextStyles.labelLargeGray5001)),
                                                                       Container(
                                                                           margin: getMargin(
                                                                               left:
@@ -405,7 +476,7 @@ class _HomePageState extends State<HomePage> {
 
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      Navigator.pushReplacement(
+                                                      Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
@@ -554,8 +625,7 @@ class _HomePageState extends State<HomePage> {
                                                                           buttonTextStyle: theme
                                                                               .textTheme
                                                                               .labelLarge!,
-                                                                        )
-                                                                        )
+                                                                        ))
                                                                       ],
                                                                     ),
                                                                   ),

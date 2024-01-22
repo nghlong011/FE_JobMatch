@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePageEmployer> {
     var getJobProvider =
         Provider.of<GetJobEmployerProvider>(context, listen: true);
     var jobData = getJobProvider.responseData;
-
     return SafeArea(
         child: Scaffold(
             backgroundColor: appTheme.whiteA70001,
@@ -79,19 +78,23 @@ class _HomePageState extends State<HomePageEmployer> {
                                         itemBuilder: (context, index) {
                                           var list = jobData[index]
                                               ['jobApplicationEntities'];
+                                          List<dynamic> statusOneApplications = list.where((jobApp) => jobApp['status'] == 1).toList();
+
+                                          // Đếm số lượng phần tử có status == 1
+                                          int countStatusOne = statusOneApplications.length;
+
+                                          print("Số lượng job applications có status == 1 là: $countStatusOne");
                                           var job = jobData[index];
                                           return GestureDetector(
                                             onTap: () {
-                                              Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PostJobDetailsTabContainerScreen(
-                                                          jobDetails:
-                                                          job,
-                                                ),
-                                                )
-                                              );
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PostJobDetailsTabContainerScreen(
+                                                      jobDetails: job,
+                                                    ),
+                                                  ));
                                             },
                                             child: Column(
                                               children: [
@@ -145,10 +148,12 @@ class _HomePageState extends State<HomePageEmployer> {
                                                                             Text(
                                                                           jobData[index]['title'] ??
                                                                               '',
-                                                                          style:
-                                                                              CustomTextStyles.titleSmallBluegray300.copyWith(
-                                                                                color: Color(0XFF000000),
-                                                                              ),
+                                                                          style: CustomTextStyles
+                                                                              .titleSmallBluegray300
+                                                                              .copyWith(
+                                                                            color:
+                                                                                Color(0XFF000000),
+                                                                          ),
                                                                           maxLines:
                                                                               2,
                                                                         ),
@@ -158,7 +163,24 @@ class _HomePageState extends State<HomePageEmployer> {
                                                                 ),
                                                               ),
                                                             ),
-
+                                                            CustomElevatedButton(
+                                                              height:
+                                                                  getVerticalSize(
+                                                                      28),
+                                                              width:
+                                                                  getVerticalSize(
+                                                                      100),
+                                                              text: _getStatusText(jobData[index]['status']),
+                                                              buttonTextStyle:
+                                                              TextStyle(
+                                                                color: Color(0XFFffffff),
+                                                                fontSize: getFontSize(
+                                                                  12,
+                                                                ),
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                              buttonStyle: _color(jobData[index]['status']),
+                                                            ),
                                                           ],
                                                         ),
                                                         Row(
@@ -204,42 +226,49 @@ class _HomePageState extends State<HomePageEmployer> {
                                                             ))
                                                           ],
                                                         ),
-
-                                                          Padding(padding:
-                                                            getPadding(
+                                                        Padding(
+                                                          padding: getPadding(
                                                             top: 10,
                                                             bottom: 10,
                                                           ),
                                                           child: Row(
                                                             children: [
-                                                              Expanded(child:
-                                                              CustomElevatedButton(
-                                                                onTap: () async {
-                                                                  var data = jobData[index]['jobId'].toString();
-                                                                  onTapContinue(context, data);
+                                                              Expanded(
+                                                                  child:
+                                                                      CustomElevatedButton(
+                                                                onTap:
+                                                                    () async {
+                                                                  var data = jobData[
+                                                                              index]
+                                                                          [
+                                                                          'jobId']
+                                                                      .toString();
+                                                                  onTapContinue(
+                                                                      context,
+                                                                      data);
                                                                 },
-
-
                                                                 height:
-                                                                getVerticalSize(
-                                                                    28),
+                                                                    getVerticalSize(
+                                                                        28),
                                                                 text: 'Xoá Tin',
-                                                                margin: getMargin(
+                                                                margin:
+                                                                    getMargin(
                                                                   left: 8,
                                                                 ),
-                                                                buttonStyle: CustomButtonStyles
-                                                                    .fillRedTL4,
+                                                                buttonStyle:
+                                                                    CustomButtonStyles
+                                                                        .fillRedTL4,
                                                                 buttonTextStyle: theme
                                                                     .textTheme
-                                                                    .labelMedium!.copyWith(
-                                                                  color: Color(0XFFffffff),
+                                                                    .labelMedium!
+                                                                    .copyWith(
+                                                                  color: Color(
+                                                                      0XFFffffff),
                                                                 ),
-                                                              )
-                                                              )
+                                                              ))
                                                             ],
-                                                          ),)
-
-
+                                                          ),
+                                                        )
                                                       ],
                                                     ),
                                                   ),
@@ -254,20 +283,47 @@ class _HomePageState extends State<HomePageEmployer> {
                                       )
                                     : CircularProgressIndicator(),
                               )))
-                    ]
-                )
-            )
-        )
-    );
+                    ]))));
+  }
+  _color (int? status){
+    switch (status) {
+      case 1:
+        return CustomButtonStyles
+            .green;
+      case 2:
+        return CustomButtonStyles
+            .fillRedTL4;
+      case 3:
+        return CustomButtonStyles
+            .yellow;
+      default:
+        return 'Khác';
+    }
+  }
+  _getStatusText(int? status) {
+    switch (status) {
+      case 1:
+        return 'Đang bật';
+      case 2:
+        return 'Đang tắt';
+      case 3:
+        return 'Đang xét duyệt';
+      default:
+        return 'Khác';
+    }
   }
   onTapContinue(BuildContext context, var data) {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          content: AcceptPopupDialog(data : data),
-          backgroundColor: Colors.transparent,
-          contentPadding: EdgeInsets.zero,
-          insetPadding: const EdgeInsets.only(left: 0),
-        ));
+              content: AcceptPopupDialog(data: data),
+              backgroundColor: Colors.transparent,
+              contentPadding: EdgeInsets.zero,
+              insetPadding: const EdgeInsets.only(left: 0),
+            ));
   }
 }
+
+
+
+

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_title.dart';
@@ -34,7 +35,7 @@ class ApplyJobScreen extends StatelessWidget {
     mediaQueryData = MediaQuery.of(context);
     File? file;
     int? jobId;
-    String? status;
+    int? status;
     return SafeArea(
         child: Scaffold(
       backgroundColor: appTheme.whiteA70001,
@@ -49,7 +50,7 @@ class ApplyJobScreen extends StatelessWidget {
                 onTapArrowbackone(context);
               }),
           centerTitle: true,
-          title: AppbarTitle(text: "Apply Job")),
+          title: AppbarTitle(text: "Ứng tuyển")),
       body: Form(
           key: _formKey,
           child: Container(
@@ -61,7 +62,7 @@ class ApplyJobScreen extends StatelessWidget {
                   children: [
                     Padding(
                         padding: getPadding(top: 28),
-                        child: Text("Upload CV",
+                        child: Text("Tải CV",
                             style: CustomTextStyles.titleSmallPrimary)),
                     Padding(
                         padding: getPadding(top: 7),
@@ -99,7 +100,7 @@ class ApplyJobScreen extends StatelessWidget {
                                               if (filePath != null) {
                                                 file = File(filePath);
                                                 jobId = jobDetails['jobId'];
-                                                status = 'Đang Xét Duyệt';
+                                                status = 1;
                                               }
                                             } else {
                                               // Người dùng không chọn file
@@ -111,7 +112,7 @@ class ApplyJobScreen extends StatelessWidget {
                                           width: getSize(40)),
                                       Padding(
                                           padding: getPadding(top: 8),
-                                          child: Text("Upload File",
+                                          child: Text("Tải file",
                                               style: CustomTextStyles
                                                   .titleSmallPrimarySemiBold))
                                     ])))),
@@ -119,14 +120,19 @@ class ApplyJobScreen extends StatelessWidget {
       bottomNavigationBar:
           Consumer<ApplyJobProvider>(builder: (context, applyJobProvider, _) {
         return CustomElevatedButton(
-          text: "Continue",
+          text: "Ứng tuyển",
           margin: getMargin(left: 24, right: 24, bottom: 40),
           buttonStyle: CustomButtonStyles.fillPrimary,
           onTap: applyJobProvider.isLoading
               ? null
               : () async {
+                  String? token = await getToken();
+                  Map<String, dynamic>? decodedToken =
+                      JwtDecoder.decode(token!);
+                  String? userName = decodedToken['sub'];
                   String fileName = file!.path.split('/').last;
                   FormData userData = FormData.fromMap({
+                    'name': userName,
                     'jobId': jobId,
                     'status': status,
                     'content': await MultipartFile.fromFile(
@@ -134,9 +140,9 @@ class ApplyJobScreen extends StatelessWidget {
                       filename: fileName,
                     ),
                   });
-                  String? token = await getToken();
+
                   await Provider.of<ApplyJobProvider>(context, listen: false)
-                      .jobApp(userData, token!, context);
+                      .jobApp(userData, token, context);
                   if (applyJobProvider.succes) {
                     onTapContinue(context);
                   }

@@ -30,7 +30,7 @@ class MessagePage extends StatelessWidget {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Message")),
+                title: AppbarTitle(text: "Trò chuyện")),
             body: Container(
                 width: double.maxFinite,
                 padding: getPadding(all: 24),
@@ -41,7 +41,7 @@ class MessagePage extends StatelessWidget {
                       CustomSearchView(
                           margin: getMargin(top: 4),
                           controller: searchController,
-                          hintText: "Search Message...",
+                          hintText: "Tìm kiếm .....",
                           hintStyle: CustomTextStyles.titleMediumBluegray400,
                           prefix: Container(
                               margin: getMargin(
@@ -82,11 +82,10 @@ class MessagePage extends StatelessWidget {
                                       onTapRowesther(context);
                                     });
                                   }))),
-                      Spacer(),
                       CustomElevatedButton(
                           height: getVerticalSize(46),
-                          width: getHorizontalSize(137),
-                          text: "New Chat",
+                          width: getHorizontalSize(46),
+                          text: "",
                           leftIcon: Container(
                               margin: getMargin(right: 4),
                               child: CustomImageView(

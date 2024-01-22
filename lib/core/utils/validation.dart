@@ -42,6 +42,13 @@ bool isText(
   return isInputStringValid;
 }
 
+bool isEmailValid(String email) {
+  final emailRegex = RegExp(
+    r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+  );
+
+  return emailRegex.hasMatch(email);
+}
 bool isValidPassword(String? inputString, {bool isRequired = false}) {
   if (!isRequired && (inputString == null || inputString.isEmpty)) {
     return true;

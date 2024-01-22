@@ -25,7 +25,7 @@ class CustomTextStyles {
       );
   static get labelLargeBluegray300SemiBold =>
       theme.textTheme.labelLarge!.copyWith(
-        color: appTheme.blueGray300,
+        color: Color(0XFF0E0E0E),
         fontWeight: FontWeight.w600,
       );
   static get labelLargeBlack900SemiBold => theme.textTheme.labelLarge!.copyWith(

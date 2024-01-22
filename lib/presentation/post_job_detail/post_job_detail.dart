@@ -1,13 +1,12 @@
 import 'package:flutter_html/flutter_html.dart';
-import 'package:nghlong011_s_application5/presentation/apply_job_screen/apply_job_screen.dart';
 import 'package:nghlong011_s_application5/presentation/read_cv/read_cv.dart';
+import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
-import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 
 // ignore: must_be_immutable
 class PostJobDetailsTabContainerScreen extends StatefulWidget {
@@ -307,6 +306,7 @@ class _PostJobDetailsTabContainerScreen
                                       itemBuilder: (context, index) {
                                         var jobData = widget.jobDetails[
                                             'jobApplicationEntities'];
+                                        jobData.sort((a, b) => (a['status'] as int).compareTo(b['status'] as int));
                                         return GestureDetector(
                                           onTap: () {},
                                           child: Column(
@@ -340,52 +340,78 @@ class _PostJobDetailsTabContainerScreen
                                                                 top: 4,
                                                                 bottom: 10,
                                                               ),
-                                                              child: Column(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .start,
-                                                                children: [
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      var data = jobData[index]['content'];
-                                                                      Navigator
-                                                                          .pushReplacement(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              ReadCV(data: data),
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                    child:
-                                                                        Padding(
-                                                                      padding:
-                                                                          getPadding(
-                                                                              top: 5),
-                                                                      child:
-                                                                          Text(
-                                                                        jobData[index]['status'] ??
-                                                                            '',
-                                                                        style: CustomTextStyles
-                                                                            .titleSmallBluegray300
-                                                                            .copyWith(
-                                                                          color:
-                                                                              Color(0XFF000000),
-                                                                        ),
-                                                                        maxLines:
-                                                                            2,
-                                                                      ),
+                                                              child: GestureDetector(
+                                                                onTap: () {
+                                                                  var data = jobData[index]['content'];
+
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          ReadCV(data: data),
                                                                     ),
+                                                                  );
+                                                                },
+                                                                child:
+                                                                Padding(
+                                                                  padding:
+                                                                  getPadding(
+                                                                      top: 5),
+                                                                  child:
+                                                                  Text(
+                                                                    jobData[index]['name'] ??
+                                                                        '',
+                                                                    style: CustomTextStyles
+                                                                        .titleSmallBluegray300
+                                                                        .copyWith(
+                                                                      color: appTheme.black900,
+                                                                    ),
+                                                                    maxLines:
+                                                                    2,
                                                                   ),
-                                                                ],
+                                                                ),
                                                               ),
                                                             ),
                                                           ),
+                                                          CustomElevatedButton(
+                                                            height:
+                                                            getVerticalSize(
+                                                                28),
+                                                            width:
+                                                            getVerticalSize(
+                                                                100),
+                                                            text: jobData[index]['status']==1?'Chưa xem' : 'Đã xem',
+                                                            buttonTextStyle:
+                                                            theme
+                                                                .textTheme
+                                                                .labelLarge!,
+                                                            buttonStyle: _color(jobData[index]['status']),
+                                                          ),
                                                         ],
                                                       ),
+                                                      Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          CustomElevatedButton(
+                                                            height:
+                                                            getVerticalSize(
+                                                                28),
+                                                            width:
+                                                            getVerticalSize(
+                                                                200),
+                                                            text: 'Duyệt CV',
+                                                            buttonTextStyle:
+                                                            theme
+                                                                .textTheme
+                                                                .labelLarge!.copyWith(
+                                                                color: Colors.white
+                                                            ),
+                                                            buttonStyle: CustomButtonStyles
+                                                                .fillRedTL4,
+                                                          ),
+                                                        ],
+                                                      )
                                                     ],
                                                   ),
                                                 ),
@@ -409,11 +435,34 @@ class _PostJobDetailsTabContainerScreen
     );
   }
 
-  onTapApplynow(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.applyJobScreen);
-  }
-
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
+  }
+  _color (int? status){
+    switch (status) {
+      case 1:
+        return CustomButtonStyles
+            .fillBlueGray;
+      case 2:
+        return CustomButtonStyles
+            .fillBlueGray;
+      case 3:
+        return CustomButtonStyles
+            .yellow;
+      default:
+        return 'Khác';
+    }
+  }
+  _getStatusText(int? status) {
+    switch (status) {
+      case 1:
+        return 'Chưa xem';
+      case 2:
+        return 'Đã xem';
+      case 3:
+        return '';
+      default:
+        return 'Khác';
+    }
   }
 }

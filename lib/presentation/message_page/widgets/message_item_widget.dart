@@ -97,16 +97,16 @@ class MessageItemWidget extends StatelessWidget {
                             top: 9,
                           ),
                           child: Text(
-                            "Lorem ipsum dolor sit amet...",
+                            "xin chào tôi là .......",
                             style: CustomTextStyles.titleSmallBluegray400_1,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
+                  Expanded(child: Padding(
                     padding: getPadding(
-                      left: 30,
+                      left: 10,
                       top: 7,
                     ),
                     child: Column(
@@ -137,7 +137,7 @@ class MessageItemWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
+                  ),)
                 ],
               ),
             ),

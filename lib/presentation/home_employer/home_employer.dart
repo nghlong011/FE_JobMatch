@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
-import 'package:nghlong011_s_application5/presentation/login_screen/login_screen.dart';
 import 'package:nghlong011_s_application5/presentation/message_page/message_page.dart';
 import 'package:nghlong011_s_application5/presentation/profile_page/profile_page.dart';
-import 'package:nghlong011_s_application5/widgets/custom_bottom_bar.dart';
 
 import '../../data/repository/auth.dart';
-import '../add_new_education_screen/add_new_education_screen.dart';
 import '../home_page_employer/home_page_employer.dart';
-import '../new_position_screen/new_position_screen.dart';
 import '../post_job/post_job.dart';
-import '../read_cv/read_cv.dart';
 
 // ignore_for_file: must_be_immutable
 class HomeContainerEmployerScreen extends StatefulWidget {
@@ -22,7 +18,7 @@ class HomeContainerEmployerScreen extends StatefulWidget {
 }
 
 class _HomeContainerEmployerScreenState extends State<HomeContainerEmployerScreen> {
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  int _currentIndex = 0;
   bool? receivedLoggedIn;
   @override
   void initState() {
@@ -43,61 +39,64 @@ class _HomeContainerEmployerScreenState extends State<HomeContainerEmployerScree
 
   @override
   Widget build(BuildContext context) {
-    mediaQueryData = MediaQuery.of(context);
-    receivedLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: appTheme.whiteA70001,
-        body: Navigator(
-          key: navigatorKey,
-          initialRoute: AppRoutes.homePageE,
-          onGenerateRoute: (routeSetting) => PageRouteBuilder(
-            pageBuilder: (ctx, ani, ani1) => getCurrentPage(routeSetting.name!),
-            transitionDuration: Duration(seconds: 0),
-          ),
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          // Add your pages here
+          HomePageEmployer(),
+          PostJobScreen(),
+          MessagePage(),
+          ProfilePage(),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        height: getVerticalSize(60),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.onPrimaryContainer.withOpacity(1),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.primary.withOpacity(0.08),
+              spreadRadius: getHorizontalSize(2),
+              blurRadius: getHorizontalSize(2),
+              offset: Offset(
+                0,
+                -4,
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: receivedLoggedIn! ? CustomBottomBar(
-          onChanged: (BottomBarEnum type) {
-            navigatorKey.currentState!.pushNamed(getCurrentRoute(type));
+        child: GNav(
+          tabs: [
+            GButton(
+              icon: Icons.home,
+              text: 'Trang chủ',
+            ),
+            GButton(
+              icon: Icons.note_add,
+              text: 'Đăng tin',
+            ),
+            GButton(
+              icon: Icons.message,
+              text: 'Message',
+            ),
+            GButton(
+              icon: Icons.person,
+              text: 'Hồ sơ',
+            ),
+          ],
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          gap: 8,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          iconSize: 24, // Adjust icon size as neededAdjust gap as needed
+          selectedIndex: _currentIndex,
+          onTabChange: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
           },
-        ): null,
+        ),
       ),
     );
-  }
-
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePageE;
-      case BottomBarEnum.Message:
-        return AppRoutes.messagePage;
-      case BottomBarEnum.Company:
-        return AppRoutes.postPage;
-      case BottomBarEnum.Saved:
-        return AppRoutes.profilePage;
-      default:
-        return "/";
-    }
-  }
-
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePageE:
-        return HomePageEmployer();
-      case AppRoutes.messagePage:
-        return MessagePage();
-      case AppRoutes.postPage:
-        return PostJobScreen();
-      case AppRoutes.profilePage:
-        return ProfilePage();
-      case AppRoutes.loginScreen:
-        return LoginScreen();
-      case AppRoutes.newPositionScreen:
-        return NewPositionScreen();
-      case AppRoutes.addNewEducationScreen:
-        return AddNewEducationScreen();
-      default:
-        return DefaultWidget();
-    }
   }
 }

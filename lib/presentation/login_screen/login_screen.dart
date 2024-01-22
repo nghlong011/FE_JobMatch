@@ -7,13 +7,21 @@ import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 import 'login.dart';
 
 // ignore_for_file: must_be_immutable
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool isPasswordError = true;
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +49,8 @@ class LoginScreen extends StatelessWidget {
                               }),
                           Padding(
                               padding: getPadding(top: 44),
-                              child: Text("Hi, Welcome Back! 👋",
+                              child: Text("Đăng nhập",
                                   style: theme.textTheme.headlineSmall)),
-                          CustomOutlinedButton(
-                              height: getVerticalSize(56),
-                              text: "Đăng nhập với Google",
-                              margin: getMargin(top: 31),
-                              leftIcon: Container(
-                                  margin: getMargin(right: 12),
-                                  child: CustomImageView(
-                                      svgPath: ImageConstant.imgGooglesymbol1)),
-                              buttonStyle: CustomButtonStyles.outlinePrimary,
-                              buttonTextStyle: theme.textTheme.titleMedium!),
                           Padding(
                               padding: getPadding(left: 33, top: 26, right: 20),
                               child: Row(
@@ -64,11 +62,6 @@ class LoginScreen extends StatelessWidget {
                                         child: SizedBox(
                                             width: getHorizontalSize(62),
                                             child: Divider())),
-                                    Padding(
-                                        padding: getPadding(left: 5),
-                                        child: Text("Hoặc đăng nhập với",
-                                            style: CustomTextStyles
-                                                .titleSmallBluegray300)),
                                     Padding(
                                         padding: getPadding(top: 8, bottom: 8),
                                         child: SizedBox(
@@ -99,7 +92,25 @@ class LoginScreen extends StatelessWidget {
                                   child: Text("Password",
                                       style: theme.textTheme.titleSmall))),
                           CustomTextFormField(
-                              obscureText: false,
+                              obscureText: isPasswordError,
+                              onFieldSubmitted: (value) {
+                                final String email =
+                                    emailController.text;
+                                final String password = value;
+
+                                if (password.isNotEmpty) {
+                                  final userData = {
+                                    'email': email,
+                                    'password': password,
+                                  };
+                                  Provider.of<LoginProvider>(context,
+                                      listen: false)
+                                      .loginUser(userData, context);
+                                } else {
+                                  // Hiển thị thông báo hoặc xử lý khi mật khẩu không hợp lệ
+                                  print('Invalid password');
+                                }
+                              },
                               controller: passwordController,
                               margin: getMargin(top: 9),
                               hintText: "Nhập mật khẩu",
@@ -111,6 +122,11 @@ class LoginScreen extends StatelessWidget {
                                   margin: getMargin(
                                       left: 30, top: 14, right: 16, bottom: 14),
                                   child: CustomImageView(
+                                      onTap: (){
+                                        setState(() {
+                                          isPasswordError = !isPasswordError;
+                                        });
+                                      },
                                       svgPath: ImageConstant.imgCheckmark)),
                               suffixConstraints: BoxConstraints(
                                   maxHeight: getVerticalSize(52)),
@@ -208,6 +224,6 @@ class LoginScreen extends StatelessWidget {
   /// When the action is triggered, this function uses the [Navigator] widget
   /// to push the named route for the signUpCompleteAccountScreen.
   onTapTxtLargelabelmediu(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.signUpCompleteAccountScreen);
+    Navigator.pushNamed(context, AppRoutes.jobTypeScreen);
   }
 }

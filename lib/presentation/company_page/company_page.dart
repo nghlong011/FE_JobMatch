@@ -123,7 +123,7 @@ class _CompanyPageState extends State<CompanyPage> {
                                               .split('/');
                                       return GestureDetector(
                                         onTap: () {
-                                          Navigator.pushReplacement(
+                                          Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>

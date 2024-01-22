@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
-
-import 'package:nghlong011_s_application5/presentation/home_page/home_page.dart';
 import 'package:nghlong011_s_application5/presentation/message_page/message_page.dart';
 import 'package:nghlong011_s_application5/presentation/profile_page/profile_page.dart';
-import 'package:nghlong011_s_application5/presentation/saved_page/saved_page.dart';
 
 import '../../data/repository/auth.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import '../home_page_employer/home_page_employer.dart';
+import '../home_user/home_user.dart';
+import '../post_job/post_job.dart';
 
 // ignore_for_file: must_be_immutable
-class HomeContainerScreen extends StatefulWidget {
-  HomeContainerScreen({Key? key}) : super(key: key);
+class HomeContainerEmployerScreen extends StatefulWidget {
+  HomeContainerEmployerScreen({Key? key}) : super(key: key);
+
   @override
-  _HomeContainerScreenState createState() => _HomeContainerScreenState();
+  _HomeContainerEmployerScreenState createState() => _HomeContainerEmployerScreenState();
 }
 
-class _HomeContainerScreenState extends State<HomeContainerScreen> {
+class _HomeContainerEmployerScreenState extends State<HomeContainerEmployerScreen> {
   int _currentIndex = 0;
   bool? receivedLoggedIn;
   @override
@@ -44,8 +45,8 @@ class _HomeContainerScreenState extends State<HomeContainerScreen> {
         index: _currentIndex,
         children: [
           // Add your pages here
-          HomePage(),
-          SavedPage(),
+          HomePageAdmin(),
+          PostJobScreen(),
           MessagePage(),
           ProfilePage(),
         ],
@@ -73,8 +74,8 @@ class _HomeContainerScreenState extends State<HomeContainerScreen> {
               text: 'Trang chủ',
             ),
             GButton(
-              icon: Icons.bookmark,
-              text: 'Ứng tuyển',
+              icon: Icons.note_add,
+              text: 'Đăng tin',
             ),
             GButton(
               icon: Icons.message,
@@ -99,5 +100,4 @@ class _HomeContainerScreenState extends State<HomeContainerScreen> {
       ),
     );
   }
-
 }

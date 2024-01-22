@@ -26,7 +26,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Experience")),
+                title: AppbarTitle(text: "Kinh nghiệm")),
             body: SizedBox(
                 width: mediaQueryData.size.width,
                 child: SingleChildScrollView(
@@ -53,7 +53,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Experience",
+                                                  child: Text("Kinh nghiệm làm việc",
                                                       style: CustomTextStyles
                                                           .titleMediumBold)),
                                               CustomImageView(
@@ -98,7 +98,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                                 }))
                                       ])),
                               CustomElevatedButton(
-                                  text: "Add New Position",
+                                  text: "Thêm mới",
                                   margin: getMargin(top: 37),
                                   buttonStyle: CustomButtonStyles.fillPrimary,
                                   onTap: () {
@@ -124,7 +124,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                             children: [
                                               Padding(
                                                   padding: getPadding(top: 2),
-                                                  child: Text("Education",
+                                                  child: Text("Học vấn",
                                                       style: CustomTextStyles
                                                           .titleMediumBold_1)),
                                               CustomImageView(
@@ -157,7 +157,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                                                   .start,
                                                           children: [
                                                             Text(
-                                                                "University of Oxford",
+                                                                "Đại học thuỷ lợi",
                                                                 style: CustomTextStyles
                                                                     .titleSmallPrimarySemiBold),
                                                             Padding(
@@ -171,7 +171,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                                                               top:
                                                                                   1),
                                                                           child: Text(
-                                                                              "Computer Science",
+                                                                              "Hệ thống thông tin",
                                                                               style: theme.textTheme.labelLarge)),
                                                                       Padding(
                                                                           padding: getPadding(
@@ -195,7 +195,7 @@ class ExperienceSettingScreen extends StatelessWidget {
                                       ]))
                             ])))),
             bottomNavigationBar: CustomElevatedButton(
-                text: "Add New Education",
+                text: "Thêm mới",
                 margin: getMargin(left: 24, right: 24, bottom: 55),
                 buttonStyle: CustomButtonStyles.fillPrimary,
                 onTap: () {
@@ -203,37 +203,22 @@ class ExperienceSettingScreen extends StatelessWidget {
                 })));
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
+
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
 
-  /// Navigates to the addNewEducationScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the addNewEducationScreen.
+
   onTapAddnew(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.addNewEducationScreen);
   }
 
-  /// Navigates to the newPositionScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the newPositionScreen.
+
   onTapImgEditsquareone(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.newPositionScreen);
   }
 
-  /// Navigates to the newPositionScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the newPositionScreen.
+
   onTapAddnew1(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.newPositionScreen);
   }

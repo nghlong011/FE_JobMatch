@@ -19,54 +19,67 @@ class AcceptPopupDialog extends StatelessWidget {
 
     return Container(
       width: getHorizontalSize(302),
+      height: getHorizontalSize(150),
       padding: getPadding(
         all: 32,
       ),
       decoration: AppDecoration.fillOnPrimaryContainer.copyWith(
         borderRadius: BorderRadiusStyle.roundedBorder16,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: CustomElevatedButton(
-            onTap: () {
-            },
-            height: getVerticalSize(46),
-            width: getHorizontalSize(127),
-            text: "Huỷ",
-            margin: getMargin(
-
-              top: 20,
+          Container(
+            height: getHorizontalSize(20),
+            child: Text(
+              "Bạn chắc chắn muốn xoá không?"
             ),
-            buttonStyle: CustomButtonStyles.fillPrimaryTL20,
-            buttonTextStyle: CustomTextStyles.titleSmallGray5001,
-          ),),
-          Expanded(child: CustomElevatedButton(
-            onTap: () async {
-              String? token = await getToken();
-              var dataJobAppProvider = Provider.of<SearchProvider>(context, listen: false);
-              await dataJobAppProvider.dellJob(data, token!, context);
-              if (dataJobAppProvider.succes) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeContainerEmployerScreen(),
-                  ),
-                );
-              }
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(child: CustomElevatedButton(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                height: getVerticalSize(46),
+                width: getHorizontalSize(127),
+                text: "Huỷ",
+                margin: getMargin(
+                  top: 20,
+                ),
+                buttonStyle: CustomButtonStyles.fillPrimaryTL20,
+                buttonTextStyle: CustomTextStyles.titleSmallGray5001,
+              ),),
+              Expanded(
+                child: CustomElevatedButton(
+                onTap: () async {
+                  String? token = await getToken();
+                  var dataJobAppProvider = Provider.of<SearchProvider>(context, listen: false);
+                  await dataJobAppProvider.dellJob(data, token!, context);
+                  if (dataJobAppProvider.succes) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeContainerEmployerScreen(),
+                      ),
+                    );
+                  }
 
-            },
-            height: getVerticalSize(46),
-            width: getHorizontalSize(127),
-            text: "Xác nhận xoá",
-            margin: getMargin(
-              left: 10,
-              top: 20,
-            ),
-            buttonStyle: CustomButtonStyles.fillPrimaryTL20,
-            buttonTextStyle: CustomTextStyles.titleSmallGray5001,
-          ),)
+                },
+                height: getVerticalSize(46),
+                width: getHorizontalSize(127),
+                text: "Xác nhận xoá",
+                margin: getMargin(
+                  left: 10,
+                  top: 20,
+                ),
+                buttonStyle: CustomButtonStyles.fillRedTL4,
+                buttonTextStyle: CustomTextStyles.titleSmallGray5001,
+              ),)
+            ],
+          ),
         ],
       ),
     );

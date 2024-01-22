@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nghlong011_s_application5/core/app_export.dart';
 import 'package:nghlong011_s_application5/widgets/app_bar/appbar_image_1.dart';
@@ -8,13 +9,15 @@ import 'package:nghlong011_s_application5/widgets/custom_elevated_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_outlined_button.dart';
 import 'package:nghlong011_s_application5/widgets/custom_text_form_field.dart';
 
+import '../../data/repository/update_profile.dart';
+
 // ignore_for_file: must_be_immutable
 class AddNewEducationScreen extends StatelessWidget {
   AddNewEducationScreen({Key? key}) : super(key: key);
 
   TextEditingController frameOneController = TextEditingController();
 
-  List<String> dropdownItemList = ["Item One", "Item Two", "Item Three"];
+  List<String> dropdownItemList = ["2019", "2020", "2021"];
 
   TextEditingController frameoneoneController = TextEditingController();
 
@@ -38,7 +41,7 @@ class AddNewEducationScreen extends StatelessWidget {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Add New Education")),
+                title: AppbarTitle(text: "Thêm học vấn")),
             body: SizedBox(
                 width: mediaQueryData.size.width,
                 child: SingleChildScrollView(
@@ -49,7 +52,7 @@ class AddNewEducationScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("School", style: theme.textTheme.titleSmall),
+                              Text("Trường Đại học", style: theme.textTheme.titleSmall),
                               CustomTextFormField(
                                   controller: frameOneController,
                                   margin: getMargin(top: 9),
@@ -58,7 +61,7 @@ class AddNewEducationScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 20),
-                                  child: Text("Degree",
+                                  child: Text("Năm học",
                                       style: theme.textTheme.titleSmall)),
                               CustomDropDown(
                                   icon: Container(
@@ -74,7 +77,7 @@ class AddNewEducationScreen extends StatelessWidget {
                                   onChanged: (value) {}),
                               Padding(
                                   padding: getPadding(top: 20),
-                                  child: Text("Field of study",
+                                  child: Text("Ngành học",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: frameoneoneController,
@@ -84,11 +87,11 @@ class AddNewEducationScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Start Date",
+                                  child: Text("Năm bắt đầu",
                                       style: theme.textTheme.titleSmall)),
                               CustomOutlinedButton(
                                   height: getVerticalSize(52),
-                                  text: "Select Date",
+                                  text: "Chọn năm",
                                   margin: getMargin(top: 9),
                                   rightIcon: Container(
                                       margin: getMargin(left: 30),
@@ -99,11 +102,11 @@ class AddNewEducationScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("End Date",
+                                  child: Text("Năm kết thúc",
                                       style: theme.textTheme.titleSmall)),
                               CustomOutlinedButton(
                                   height: getVerticalSize(52),
-                                  text: "Select Date",
+                                  text: "Chọn năm",
                                   margin: getMargin(top: 9),
                                   rightIcon: Container(
                                       margin: getMargin(left: 30),
@@ -114,7 +117,7 @@ class AddNewEducationScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Grade",
+                                  child: Text("Bằng",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: frameonetwoController,
@@ -124,7 +127,7 @@ class AddNewEducationScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 20),
-                                  child: Text("Description",
+                                  child: Text("Mô tả",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: groupEightyOneController,
@@ -137,28 +140,39 @@ class AddNewEducationScreen extends StatelessWidget {
                                   contentPadding: getPadding(
                                       left: 16, top: 20, right: 16, bottom: 20))
                             ])))),
-            bottomNavigationBar: CustomElevatedButton(
-                text: "Save Changes",
-                margin: getMargin(left: 24, right: 24, bottom: 37),
+            bottomNavigationBar: Consumer<UpdateProfile>(builder: (context, updateProfile, _) {
+              return CustomElevatedButton(
+                text: "Lưu",
+                margin: getMargin(left: 24, right: 24, bottom: 40),
                 buttonStyle: CustomButtonStyles.fillPrimary,
-                onTap: () {
-                  onTapSavechanges(context);
-                })));
+                onTap: updateProfile.isLoading
+                    ? null
+                    : () async {
+                  final String name =
+                      frameOneController.text;
+
+                  FormData userData = FormData.fromMap({
+                    'education': name,
+                  });
+                  String? token = await getToken();
+                  await Provider.of<UpdateProfile>(context, listen: false)
+                      .updateProfile(userData, token!, context);
+                  if (updateProfile.succes) {
+                    onTapSavechanges(context);
+                  }
+                },
+              );
+            }),
+        )
+    );
   }
 
-  /// Navigates back to the previous screen.
-  ///
-  /// This function takes a [BuildContext] object as a parameter, which is used
-  /// to navigate back to the previous screen.
+
   onTapArrowbackone(BuildContext context) {
     Navigator.pop(context);
   }
 
-  /// Navigates to the experienceSettingScreen when the action is triggered.
-  ///
-  /// The [BuildContext] parameter is used to build the navigation stack.
-  /// When the action is triggered, this function uses the [Navigator] widget
-  /// to push the named route for the experienceSettingScreen.
+
   onTapSavechanges(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.experienceSettingScreen);
   }

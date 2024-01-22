@@ -9,7 +9,8 @@ import 'package:nghlong011_s_application5/widgets/app_bar/custom_app_bar.dart';
 
 import 'package:nghlong011_s_application5/presentation/logout_popup_dialog/logout_popup_dialog.dart';
 
-import '../../data/repository/auth.dart';
+import '../change_password/change_password.dart';
+
 
 // ignore_for_file: must_be_immutable
 class SettingsScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
                 onTapArrowbackone(context);
               }),
           centerTitle: true,
-          title: AppbarTitle(text: "Settings")),
+          title: AppbarTitle(text: "Cài đặt")),
       body: SizedBox(
           width: mediaQueryData.size.width,
           child: SingleChildScrollView(
@@ -44,62 +45,16 @@ class SettingsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                            padding: getPadding(top: 13, bottom: 13),
-                            decoration: AppDecoration.fillPrimary.copyWith(
-                                borderRadius:
-                                    BorderRadiusStyle.roundedBorder16),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Padding(
-                                      padding: getPadding(top: 3, bottom: 2),
-                                      child: SizedBox(
-                                          height: getSize(64),
-                                          width: getSize(64),
-                                          child: CircularProgressIndicator(
-                                              value: 0.5,
-                                              strokeWidth:
-                                                  getHorizontalSize(4)))),
-                                  Padding(
-                                      padding: getPadding(top: 6),
-                                      child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text("Profile Completeness",
-                                                style: CustomTextStyles
-                                                    .titleMediumInterOnPrimaryContainer),
-                                            Opacity(
-                                                opacity: 0.8,
-                                                child: Container(
-                                                    width:
-                                                        getHorizontalSize(199),
-                                                    margin: getMargin(top: 6),
-                                                    child: Text(
-                                                        "Quality profiles are 5 times more likely to get hired by clients.",
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: CustomTextStyles
-                                                            .bodySmallOnPrimaryContainer
-                                                            .copyWith(
-                                                                height: 1.67))))
-                                          ]))
-                                ])),
                         Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
                                 padding: getPadding(top: 32),
-                                child: Text("Account",
+                                child: Text("Tài khoản",
                                     style:
                                         CustomTextStyles.labelLargeSemiBold))),
                         GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PersonalInfoScreen(),
@@ -119,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
                                           margin: getMargin(top: 3)),
                                       Padding(
                                           padding: getPadding(left: 12, top: 5),
-                                          child: Text("Personal Info",
+                                          child: Text("Thông tin cá nhân",
                                               style:
                                                   theme.textTheme.titleMedium)),
                                       Spacer(),
@@ -135,7 +90,7 @@ class SettingsScreen extends StatelessWidget {
                             child: Divider(indent: getHorizontalSize(36))),
                         GestureDetector(
                             onTap: () {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
@@ -156,7 +111,7 @@ class SettingsScreen extends StatelessWidget {
                                           margin: getMargin(top: 3)),
                                       Padding(
                                           padding: getPadding(left: 12, top: 7),
-                                          child: Text("Experience",
+                                          child: Text("Kinh nghiệm làm việc",
                                               style:
                                                   theme.textTheme.titleMedium)),
                                       Spacer(),
@@ -170,184 +125,46 @@ class SettingsScreen extends StatelessWidget {
                         Padding(
                             padding: getPadding(top: 14),
                             child: Divider(indent: getHorizontalSize(36))),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                                padding: getPadding(top: 26),
-                                child: Text("General",
-                                    style:
-                                        CustomTextStyles.labelLargeSemiBold))),
                         GestureDetector(
-                            child: Padding(
-                                padding: getPadding(top: 15),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      CustomImageView(
-                                          svgPath: ImageConstant.imgBell,
-                                          height: getSize(24),
-                                          width: getSize(24),
-                                          margin: getMargin(top: 2)),
-                                      Padding(
-                                          padding: getPadding(left: 12, top: 2),
-                                          child: Text("Notification",
-                                              style: CustomTextStyles
-                                                  .titleMediumPoppins)),
-                                      Spacer(),
-                                      CustomImageView(
-                                          svgPath: ImageConstant
-                                              .imgArrowrightPrimary,
-                                          height: getSize(24),
-                                          width: getSize(24),
-                                          margin: getMargin(bottom: 2))
-                                    ]))),
-                        Padding(
-                            padding: getPadding(top: 16),
-                            child: Divider(indent: getHorizontalSize(36))),
-                        GestureDetector(
-                            onTap: () {
-                              onTapLanguage(context);
-                            },
-                            child: Padding(
-                                padding: getPadding(top: 15),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomImageView(
-                                          svgPath: ImageConstant.imgGlobe,
-                                          height: getSize(24),
-                                          width: getSize(24),
-                                          margin: getMargin(top: 2)),
-                                      Padding(
-                                          padding: getPadding(left: 12, top: 7),
-                                          child: Text("Language",
-                                              style:
-                                                  theme.textTheme.titleMedium)),
-                                      Spacer(),
-                                      CustomImageView(
-                                          svgPath: ImageConstant
-                                              .imgArrowrightPrimary,
-                                          height: getSize(24),
-                                          width: getSize(24),
-                                          margin: getMargin(bottom: 4))
-                                    ]))),
-                        Padding(
-                            padding: getPadding(top: 14),
-                            child: Divider(indent: getHorizontalSize(36))),
-                        Padding(
-                            padding: getPadding(top: 15),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  CustomImageView(
-                                      svgPath: ImageConstant.imgShielddone,
-                                      height: getSize(24),
-                                      width: getSize(24)),
-                                  Padding(
-                                      padding: getPadding(left: 12, top: 4),
-                                      child: Text("Security",
-                                          style: theme.textTheme.titleMedium)),
-                                  Spacer(),
-                                  CustomImageView(
-                                      svgPath:
-                                          ImageConstant.imgArrowrightPrimary,
-                                      height: getSize(24),
-                                      width: getSize(24))
-                                ])),
-                        Padding(
-                            padding: getPadding(top: 14),
-                            child: Divider(indent: getHorizontalSize(36))),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                                padding: getPadding(top: 26),
-                                child: Text("About",
-                                    style:
-                                        CustomTextStyles.labelLargeSemiBold))),
-                        GestureDetector(
-                            onTap: () {
-                              onTapLegalandpolicie(context);
-                            },
-                            child: Padding(
-                                padding: getPadding(top: 16),
-                                child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      CustomImageView(
-                                          svgPath: ImageConstant.imgShield,
-                                          height: getSize(24),
-                                          width: getSize(24)),
-                                      Padding(
-                                          padding: getPadding(left: 12, top: 4),
-                                          child: Text("Legal and Policies",
-                                              style:
-                                                  theme.textTheme.titleMedium)),
-                                      Spacer(),
-                                      CustomImageView(
-                                          svgPath: ImageConstant
-                                              .imgArrowrightPrimary,
-                                          height: getSize(24),
-                                          width: getSize(24))
-                                    ]))),
-                        Padding(
-                            padding: getPadding(top: 15),
-                            child: Divider(indent: getHorizontalSize(36))),
-                        Padding(
-                            padding: getPadding(top: 16),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  CustomImageView(
-                                      svgPath: ImageConstant.imgQuestionPrimary,
-                                      height: getSize(24),
-                                      width: getSize(24)),
-                                  Padding(
-                                      padding: getPadding(left: 12, top: 4),
-                                      child: Text("Help & Feedback",
-                                          style: theme.textTheme.titleMedium)),
-                                  Spacer(),
-                                  CustomImageView(
-                                      svgPath:
-                                          ImageConstant.imgArrowrightPrimary,
-                                      height: getSize(24),
-                                      width: getSize(24))
-                                ])),
-                        Padding(
-                            padding: getPadding(top: 17),
-                            child: Divider(indent: getHorizontalSize(36))),
-                        Padding(
-                            padding: getPadding(top: 16),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  CustomImageView(
-                                      svgPath: ImageConstant.imgAlert,
-                                      height: getSize(24),
-                                      width: getSize(24)),
-                                  Padding(
-                                      padding: getPadding(left: 12, top: 2),
-                                      child: Text("About Us",
-                                          style: theme.textTheme.titleMedium)),
-                                  Spacer(),
-                                  CustomImageView(
-                                      svgPath:
-                                          ImageConstant.imgArrowrightPrimary,
-                                      height: getSize(24),
-                                      width: getSize(24))
-                                ])),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ChangePassScreen(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                              padding: getPadding(top: 15),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    CustomImageView(
+                                        svgPath: ImageConstant.imgShielddone,
+                                        height: getSize(24),
+                                        width: getSize(24)),
+                                    Padding(
+                                        padding: getPadding(left: 12, top: 4),
+                                        child: Text("Đổi mật khẩu",
+                                            style: theme.textTheme.titleMedium)),
+                                    Spacer(),
+                                    CustomImageView(
+                                        svgPath:
+                                        ImageConstant.imgArrowrightPrimary,
+                                        height: getSize(24),
+                                        width: getSize(24))
+                                  ])),
+                        ),
                         Align(
                             alignment: Alignment.center,
                             child: GestureDetector(
                                 onTap: () {
-                                  Provider.of<AuthProvider>(context, listen: false).isLoggedIn = false;
-                                  bool receivedLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn;
-                                  print(receivedLoggedIn);
-                                  Navigator.pushNamed(context, AppRoutes.loginScreen);
+                                  Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
                                 },
                                 child: Padding(
                                     padding: getPadding(top: 28),
-                                    child: Text("Logout",
+                                    child: Text("Đăng xuất",
                                         style: CustomTextStyles
                                             .titleMediumRedA200))))
                       ])))),
@@ -366,17 +183,6 @@ class SettingsScreen extends StatelessWidget {
     Navigator.pushNamed(context, AppRoutes.experienceSettingScreen);
   }
 
-  onTapNotification(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.notificationsScreen);
-  }
-
-  onTapLanguage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.languageScreen);
-  }
-
-  onTapLegalandpolicie(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.privacyScreen);
-  }
 
   onTapTxtLargelabelmediu(BuildContext context) {
     showDialog(

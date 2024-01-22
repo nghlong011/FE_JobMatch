@@ -60,11 +60,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         return CustomSearchView(
                             onFieldSubmitted: (value) async {
                               List<dynamic> searchResults = data
-                                  .where((company) =>
-                                      company['jobs'] != null &&
-                                      company['jobs'].any((job) =>
-                                          job['title'] != null &&
-                                          job['title']
+                                  .where((company) => company['jobs'] != null && company['jobs'].any((job)
+                              => job['title'] != null && job['title']
                                               .toString()
                                               .toLowerCase()
                                               .contains(value.toLowerCase())))

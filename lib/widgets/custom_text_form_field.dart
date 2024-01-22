@@ -28,12 +28,14 @@ class CustomTextFormField extends StatelessWidget {
     this.filled = true,
     this.validator,
     this.errorText,
+    this.onFieldSubmitted,
+    this.onTap,
   }) : super(
           key: key,
         );
-
+  final ValueChanged<String>? onFieldSubmitted;
   final Alignment? alignment;
-
+  final GestureTapCallback? onTap;
   final double? width;
 
   final EdgeInsetsGeometry? margin;
@@ -94,6 +96,7 @@ class CustomTextFormField extends StatelessWidget {
         width: width ?? double.maxFinite,
         margin: margin,
         child: TextFormField(
+          onFieldSubmitted: onFieldSubmitted,
           controller: controller,
           focusNode: focusNode ?? FocusNode(),
           autofocus: autofocus!,

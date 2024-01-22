@@ -36,7 +36,7 @@ class ApplyJobPopupDialog extends StatelessWidget {
               top: 25,
             ),
             child: Text(
-              "Success",
+              "Thành công",
               style: CustomTextStyles.titleMediumBold,
             ),
           ),
@@ -45,7 +45,7 @@ class ApplyJobPopupDialog extends StatelessWidget {
               top: 9,
             ),
             child: Text(
-              "Your Application is succesfully sent",
+              "Bạn đã ứng tuyển thành công",
               style: CustomTextStyles.titleSmallBluegray400,
             ),
           ),
@@ -60,7 +60,7 @@ class ApplyJobPopupDialog extends StatelessWidget {
             },
             height: getVerticalSize(46),
             width: getHorizontalSize(127),
-            text: "Continue",
+            text: "Đóng",
             margin: getMargin(
               top: 23,
             ),

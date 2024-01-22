@@ -38,7 +38,7 @@ class NewPositionScreen extends StatelessWidget {
                       onTapArrowbackone(context);
                     }),
                 centerTitle: true,
-                title: AppbarTitle(text: "Add New Position")),
+                title: AppbarTitle(text: "Thêm Kinh nghiệm ")),
             body: SizedBox(
                 width: mediaQueryData.size.width,
                 child: SingleChildScrollView(
@@ -49,7 +49,7 @@ class NewPositionScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("Title", style: theme.textTheme.titleSmall),
+                              Text("Tên chức vụ", style: theme.textTheme.titleSmall),
                               CustomTextFormField(
                                   controller: frameOneController,
                                   margin: getMargin(top: 9),
@@ -67,7 +67,7 @@ class NewPositionScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Text("Employment Type",
+                                        Text("Ngành",
                                             style: theme.textTheme.titleSmall),
                                         CustomDropDown(
                                             icon: Container(
@@ -85,7 +85,7 @@ class NewPositionScreen extends StatelessWidget {
                                       ])),
                               Padding(
                                   padding: getPadding(top: 20),
-                                  child: Text("Company Name",
+                                  child: Text("Tên công ty",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: nameController,
@@ -95,21 +95,21 @@ class NewPositionScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Location ",
+                                  child: Text("Vị trí ",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: locationController,
                                   margin: getMargin(top: 9),
-                                  hintText: "Ex: Singapore, Singapore",
+                                  hintText: "",
                                   hintStyle:
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("Start Date",
+                                  child: Text("Thời gian bắt đầu",
                                       style: theme.textTheme.titleSmall)),
                               CustomOutlinedButton(
                                   height: getVerticalSize(52),
-                                  text: "Select Date",
+                                  text: "Chọn ngày",
                                   margin: getMargin(top: 9),
                                   rightIcon: Container(
                                       margin: getMargin(left: 30),
@@ -120,11 +120,11 @@ class NewPositionScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 18),
-                                  child: Text("End Date",
+                                  child: Text("Thời gian kết thúc",
                                       style: theme.textTheme.titleSmall)),
                               CustomOutlinedButton(
                                   height: getVerticalSize(52),
-                                  text: "Select Date",
+                                  text: "Chọn ngày",
                                   margin: getMargin(top: 9),
                                   rightIcon: Container(
                                       margin: getMargin(left: 30),
@@ -135,7 +135,7 @@ class NewPositionScreen extends StatelessWidget {
                                       CustomTextStyles.titleMediumBluegray400),
                               Padding(
                                   padding: getPadding(top: 20),
-                                  child: Text("Job Role Description",
+                                  child: Text("Mô tả công việc",
                                       style: theme.textTheme.titleSmall)),
                               CustomTextFormField(
                                   controller: groupTwentySeveController,
@@ -149,7 +149,7 @@ class NewPositionScreen extends StatelessWidget {
                                       left: 16, top: 20, right: 16, bottom: 20))
                             ])))),
             bottomNavigationBar: CustomElevatedButton(
-                text: "Save Changes",
+                text: "Lưu thay đổi",
                 margin: getMargin(left: 24, right: 24, bottom: 37),
                 buttonStyle: CustomButtonStyles.fillPrimary,
                 onTap: () {

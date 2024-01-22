@@ -74,7 +74,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
           ],
         ),
         body: SizedBox(
-          height: getVerticalSize(688),
+          height: getVerticalSize(750),
           width: double.maxFinite,
           child: Stack(
             alignment: Alignment.bottomCenter,
@@ -82,7 +82,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
               SizedBox(
                 width: double.maxFinite,
                 child: Align(
-                  alignment: Alignment.topRight,
+                  alignment: Alignment.center,
                   child: Padding(
                     padding: getPadding(
                       top: 30,
@@ -90,11 +90,12 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           margin: getMargin(
                             right: 24,
+                            left: 45
                           ),
                           padding: getPadding(
                             left: 72,
@@ -107,7 +108,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
                                 height: getSize(79),
@@ -201,7 +202,7 @@ class CompanyDetailsScreenState extends State<CompanyDetailsScreen>
                                         var jobLocation = job['location'];
                                         return GestureDetector(
                                           onTap: () {
-                                            Navigator.pushReplacement(
+                                            Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
